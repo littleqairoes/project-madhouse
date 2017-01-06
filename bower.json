@@ -13,7 +13,8 @@
     "polymer": "Polymer/polymer#^1.7.0",
     "qairoe-app-layout": "littleqairoes/qairoe-app-layout#^0.0.4",
     "qairoe-app-router": "littleqairoes/qairoe-app-router#^0.0.8",
-    "app-storage": "PolymerElements/app-storage#^0.9.7"
+    "app-storage": "PolymerElements/app-storage#^0.9.7",
+    "paper-card": "PolymerElements/paper-card#^1.1.4"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

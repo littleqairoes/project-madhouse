@@ -1,0 +1,85 @@
+<!-- Polymer dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../web-components/project-madhouse-org/project-madhouse-org-behavior.html">
+
+<!-- Style dependency -->
+<link rel="import" href="org-page-style.html">
+
+<dom-module id="org-page">
+  <template>
+    <style is="custom-style" include="org-page-style">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <div class="card">
+      <h1>Org Page [[params.orgid]]</h1>
+      <!--<template is="dom-if" if="[[orgId]]">-->
+      <!--  Yey-->
+      <!--</template>-->
+      <!--<template is="dom-if" if="[[!orgId]]">-->
+      <!--  None-->
+      <!--</template>-->
+      <!--<template is="dom-if" if="[[edit]]">-->
+      <!--  Edit-->
+      <!--</template>-->
+      <!--<template is="dom-if" if="[[!edit]]">-->
+      <!--  Non Edit-->
+      <!--</template>-->
+      <template is="dom-repeat" items="[[orgArray]]" >
+        <a href="/org/[[item.$key]]" hidden$="{{checkView}}">
+          <paper-card heading="[[item.$key]]" on-tap="sampleTap">
+            <div class="card-content">
+              [[item.title]]
+            </div>
+          </paper-card>  
+        </a>
+        
+      </template>  
+      
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'org-page',
+      
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseOrgBehavior
+      ],
+      
+      properties: {
+        orgId: {
+          type: String,
+          value: ''
+        },
+        edit: {
+          type: Boolean,
+          value: false
+        },
+        
+        checkView: {
+          type: Boolean,
+          value: false,
+          notify: true
+        }
+      },
+      
+      observers: [
+        '_changeparamsOrgId(params.orgid)'  
+      ],
+      
+      _changeparamsOrgId: function(id) {
+        this.orgId = id || '';
+        this.checkView = (this.orgId == '') ? false : true;
+        console.log("change");
+      },
+      
+      sampleTap: function(e) {
+        this.checkView = true;
+      }
+    });
+  </script>
+</dom-module>
