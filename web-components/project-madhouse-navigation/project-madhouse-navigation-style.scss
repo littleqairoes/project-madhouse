@@ -1,0 +1,18 @@
+//
+
+@import 'styles/variables';
+
+.project-madhouse-navigation-header {
+  .project-madhouse-navigation-item {
+    color: $gray-dark;
+    text-decoration: none;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+.project-madhouse-navigation-item {
+  &.iron-selected {
+    font-weight: bold;
+  }
+}
