@@ -1,0 +1,149 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-storage/app-network-status-behavior.html">
+<link rel="import" href="../../web-components/project-madhouse-script/modernizr.html">
+
+<script>
+  (function() {
+
+  /** @polymerBehavior PROJECTMADHOUSE.ProjectMadhouseUtilsBehavior */
+    PROJECTMADHOUSE.ProjectMadhouseUtilsBehaviorImpl = {
+      properties: {
+        version: {
+          type: String,
+          readOnly: true,
+          value: function() { return this._version; }
+        }
+      },
+
+      get _version() {
+        return 'v1'
+      },
+
+      get _todayUTC() {
+        return firebase ? firebase.database.ServerValue.TIMESTAMP : Date.now();
+      },
+
+      _forceZero: function(obj, zeroValue) {
+        if (zeroValue === null || zeroValue === undefined) zeroValue = false;
+        return typeof obj === 'object' && this._isEmpty(obj) ? zeroValue : obj;
+      },
+
+      _isEmpty: function(obj) {
+        for(var prop in obj) {
+          if(obj.hasOwnProperty(prop))
+            return false;
+        }
+        return JSON.stringify(obj) === JSON.stringify({});
+      },
+      
+      _trimText: function(text, length) {
+        var l = length ? length : 35;
+        if (typeof text === 'string') {
+          return text.length >= l ? text.substring(0, l).trim() + '...' : text;  
+        }
+      },
+
+      _renderDate: function(d) {
+        var date = d;
+        if (typeof d === 'object' && d.value) {
+          date = d.value;
+        }
+        var nd = new Date(date);
+        return nd.toLocaleDateString() + ' - ' + nd.toLocaleTimeString();
+      },
+      
+      _returnArrayElement: function(array, index) {
+        return array ? array[index] : null;
+      },
+      
+      _returnArrayElementAttribute: function(array, index, key) {
+        return array[index] ? array[index][key] : null;
+      },
+      
+      _showMessage: function(message, err) {
+        // if (this.$$('#toaster')) {
+        //   this.$$('#toaster').show(message);
+        // } else if (!err) {
+        //   console.log(message);
+        // }
+
+        PROJECTMADHOUSE.Elements.Template.$.toast.showMessage(message);
+        
+        if (err) {
+          if (console.error) {
+            console.error(message);
+          } else {
+            console.log(message);
+          }
+        } 
+      },
+
+      _catchError: function(err) {
+        if (window.Raven) {
+          if (err.detail) {
+            Raven.captureMessage("Error event", err.detail);
+          } else {
+            Raven.captureException(err);
+          }
+        }
+        
+        var error = err.detail ? err.detail : err;
+        this._showMessage('Error: ' + error.detail && error.detail.message ? error.detail.message : error.message, true);
+      },
+      
+      _textToUrl: function(text) {
+        return encodeURI(text);
+      },
+
+      _thisUrl: function() {
+        return window.location.href;
+      },
+
+      _windowSize: function() {
+        var width = 0;
+        var height = 0;
+        if (window && document) {
+          if ( typeof window.innerWidth === 'number' ) {
+            // Non-IE
+            width = window.innerWidth;
+            height = window.innerHeight;
+          } else if ( document.documentElement && (
+            document.documentElement.clientWidth ||
+            document.documentElement.clientHeight )) {
+            // IE 6+ in 'standards compliant mode'
+            width = document.documentElement.clientWidth;
+            height = document.documentElement.clientHeight;
+          } else if ( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+            // IE 4 compatible
+            width = document.body.clientWidth;
+            height = document.body.clientHeight;
+          }
+        }
+
+        return {width: width, height: height};
+      },
+      
+      _heightNodeChanged: function(e, node) {
+        var height;
+        if (e.indexOf('vh')) {
+          if (Modernizr && Modernizr.cssvhunit) {
+            height = e;
+          } else {
+            height = (parseFloat(e.replace(/vh/g, '')) * this.windowSize().height) + 'px';
+          }
+        } else if (e.indexOf('px')) {
+          height = e;
+        } else {
+          height = e + 'px';
+        }
+        
+        node.style.height = height;
+      },
+    }
+
+    PROJECTMADHOUSE.ProjectMadhouseUtilsBehavior = [
+      Polymer.AppNetworkStatusBehavior,
+      PROJECTMADHOUSE.ProjectMadhouseUtilsBehaviorImpl
+    ]
+  })();
+</script>
