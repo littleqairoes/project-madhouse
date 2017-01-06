@@ -1,0 +1,58 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../web-components/project-madhouse-utils/project-madhouse-utils-behavior.html">
+
+<script>
+  (function(){
+    'use strict';
+    /** @polymerBehavior PROJECTMADHOUSE.ProjectMadhouseOrgBehavior */
+    PROJECTMADHOUSE.ProjectMadhouseOrgBehaviorImpl = {
+
+      properties: {
+        
+        orgPath: {
+          type: Object,
+          readOnly: true,
+          value: function() { return this._orgPath; }
+        },
+        orgGroup: {
+          type: String,
+          readOnly: true,
+          value: function() { return this._orgGroup; }
+        },
+        org: {
+          type: Object
+        },
+        orgArray: {
+          type: Array,
+          value: function() {
+            return [
+              {
+                $key: "org1",
+                title: "Org One"
+              }
+            ]
+          }
+        }
+      },
+
+      get _orgGroup() {
+        return 'orgGroup';
+      },
+
+      get _orgPath() {        
+        return {
+          orgs: this._version + '/' + this._orgGroup + '/orgs', // this is where the org objects are saved
+          owner: this._version + '/' + this._orgGroup + '/owner', // this is where you set the owner of the org          
+        };
+      },
+
+      
+
+      
+    };
+    PROJECTMADHOUSE.ProjectMadhouseOrgBehavior = [
+      PROJECTMADHOUSE.ProjectMadhouseUtilsBehavior,
+      PROJECTMADHOUSE.ProjectMadhouseOrgBehaviorImpl
+    ];
+  })();
+</script>
