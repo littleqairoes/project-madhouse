@@ -1,6 +1,7 @@
 <!-- Polymer dependencies -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../web-components/project-madhouse-org/project-madhouse-org-behavior.html">
 
 <!-- Style dependency -->
@@ -15,30 +16,35 @@
     </style>
 
     <div class="card">
-      <h1>Org Page [[params.orgid]]</h1>
+      <h1>Org Page #[[params.orgid]]</h1>
       <!--<template is="dom-if" if="[[orgId]]">-->
       <!--  Yey-->
       <!--</template>-->
       <!--<template is="dom-if" if="[[!orgId]]">-->
       <!--  None-->
       <!--</template>-->
-      <!--<template is="dom-if" if="[[edit]]">-->
-      <!--  Edit-->
-      <!--</template>-->
+      <template is="dom-if" if="[[edit]]">
+        Edit
+      </template>
       <!--<template is="dom-if" if="[[!edit]]">-->
       <!--  Non Edit-->
       <!--</template>-->
-      <template is="dom-repeat" items="[[orgArray]]" >
-        <a href="/org/[[item.$key]]" hidden$="{{checkView}}">
+      <div hidden$="{{checkView}}">
+        
+      <template is="dom-repeat" items="[[orgArray]]">
           <paper-card heading="[[item.$key]]" on-tap="sampleTap">
             <div class="card-content">
               [[item.title]]
             </div>
+            <div class="card-actions">
+              <a href="/org/[[item.$key]]" >
+                <paper-button>Details</paper-button>
+              </a>
+              <paper-button>Edit</paper-button>
+            </div>
           </paper-card>  
-        </a>
-        
       </template>  
-      
+      </div>
     </div>
   </template>
 
