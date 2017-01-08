@@ -17,7 +17,7 @@
     </style>
 
     <div class="card">
-      <h1>Org Page #[[params.orgid]]</h1>
+      <h1><a href="/org">Org Page</a> #[[params.orgid]]</h1>
       <!--<template is="dom-if" if="[[orgId]]">-->
       <!--  Yey-->
       <!--</template>-->
@@ -61,6 +61,12 @@
       ],
       
       properties: {
+        orgArray: {
+          type: Array,
+          notify: true,
+          observer: 'checkArray'
+        },
+        
         orgId: {
           type: String,
           value: ''
@@ -81,6 +87,10 @@
         '_changeparamsOrgId(params.orgid)' 
         
       ],
+      
+      checkArray: function() {
+        console.log(this.orgArray);
+      },
       
       _changeparamsOrgId: function(id) {
         this.orgId = id || '';
