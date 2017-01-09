@@ -1,0 +1,94 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../web-components/project-madhouse-utils/project-madhouse-utils-behavior.html">
+
+<script>
+  (function(){
+    'use strict';
+    /** @polymerBehavior PROJECTMADHOUSE.ProjectMadhouseOrgBehavior */
+    PROJECTMADHOUSE.ProjectMadhouseCauseBehaviorImpl = {
+
+      properties: {
+        
+        causePath: {
+          type: Object,
+          readOnly: true,
+          value: function() { return this._causePath; }
+        },
+        causeGroup: {
+          type: String,
+          readOnly: true,
+          value: function() { return this._causeGroup; }
+        },
+        cause: {
+          type: Object
+        },
+        causeArray: {
+          type: Array,
+          value: function() {
+            return [
+              {
+                $key: "cause1",
+                title: "Cause One"
+              },
+              {
+                $key: "cause2",
+                title: "Cause two"
+              },
+              {
+                $key: "cause3",
+                title: "Cause three"
+              },
+              {
+                $key: "cause4",
+                title: "Cause four"
+              },
+              {
+                $key: "cause5",
+                title: "Cause five"
+              },
+              {
+                $key: "cause6",
+                title: "Cause six"
+              },
+              {
+                $key: "cause7",
+                title: "Cause seven"
+              },
+              {
+                $key: "cause8",
+                title: "Cause eight"
+              },
+              {
+                $key: "cause9",
+                title: "Cause nine"
+              },
+              {
+                $key: "cause10",
+                title: "Cause ten"
+              }
+            ]
+          }
+        }
+      },
+
+      get _causeGroup() {
+        return 'causeGroup';
+      },
+
+      get _causePath() {        
+        return {
+          causes: this._version + '/' + this._causeGroup + '/cause', // this is where the org objects are saved
+          owner: this._version + '/' + this._causeGroup + '/owner', // this is where you set the owner of the org          
+        };
+      },
+
+      
+
+      
+    };
+    PROJECTMADHOUSE.ProjectMadhouseCauseBehavior = [
+      PROJECTMADHOUSE.ProjectMadhouseUtilsBehavior,
+      PROJECTMADHOUSE.ProjectMadhouseCauseBehaviorImpl
+    ];
+  })();
+</script>

@@ -1,0 +1,108 @@
+<!-- Polymer dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../web-components/project-madhouse-cause/project-madhouse-cause-behavior.html">
+<link rel="import" href="../../web-components/cause-form/cause-form.html">
+
+<!-- Style dependency -->
+<link rel="import" href="cause-page-style.html">
+
+<dom-module id="cause-page">
+  <template>
+    <style is="custom-style" include="cause-page-style">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <div class="card">
+      <h1><a href="/cause">Cause Page</a> #[[params.causeid]]</h1>
+      
+      <template is="dom-if" if="{{checkEdit}}">
+        <a href="/cause/[[params.causeid]]/edit">
+          <paper-button>Edit</paper-button>
+        </a>
+      </template>
+      <div hidden$="{{checkView}}">
+        <template is="dom-repeat" items="[[causeArray]]">
+            <paper-card heading="[[item.$key]]">
+              <div class="card-content">
+                [[item.title]]
+              </div>
+              <div class="card-actions">
+                <a href="/cause/[[item.$key]]" >
+                  <paper-button>Details</paper-button>
+                </a>
+                <a href="/cause/[[item.$key]]/edit">
+                  <paper-button>Edit</paper-button>
+                </a>
+              </div>
+            </paper-card>  
+        </template>  
+      </div>
+    </div>
+    
+    <template is="dom-if" if="[[edit]]">
+      <cause-form causeid="[[params.causeid]]"></cause-form>
+    </template>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'cause-page',
+      
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseCauseBehavior
+      ],
+      
+      properties: {
+        causeArray: {
+          type: Array,
+          notify: true,
+          observer: 'checkArray'
+        },
+        
+        causeId: {
+          type: String,
+          value: ''
+        },
+        edit: {
+          type: Boolean,
+          value: false
+        },
+        
+        checkView: {
+          type: Boolean,
+          value: false,
+          notify: true
+        },
+        
+        checkEdit: {
+          type: Boolean,
+          value: true,
+          notify: true
+        }
+      },
+      
+      observers: [
+        '_changeparamsCauseId(params.causeid)' 
+        
+      ],
+      
+      checkArray: function() {
+        console.log(this.causeArray);
+      },
+      
+      _changeparamsCauseId: function(id) {
+        this.causeId = id || '';
+        this.checkView = (this.causeId == '') ? false : true;
+        this.checkEdit = (this.causeId == '' && !this.edit) ? false : true;
+      },
+      
+      sampleTap: function(e) {
+        this.checkView = true;
+      }
+    });
+  </script>
+</dom-module>
