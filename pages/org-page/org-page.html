@@ -25,9 +25,11 @@
       <!--  None-->
       <!--</template>-->
       
-      <!--<template is="dom-if" if="[[!edit]]">-->
-      <!--  Non Edit-->
-      <!--</template>-->
+      <template is="dom-if" if="[[!edit]]">
+        <a href="/org/[[params.orgid]]/edit">
+          <paper-button>Edit</paper-button>
+        </a>
+      </template>
       <div hidden$="{{checkView}}">
         <template is="dom-repeat" items="[[orgArray]]">
             <paper-card heading="[[item.$key]]">
