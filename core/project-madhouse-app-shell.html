@@ -60,10 +60,15 @@ Wham! It's all awesome now!
         <!-- ROUTER STARTS HERE -->
         <home-page route="/"></home-page>
         <first-page route="/first"></first-page>
+        
         <org-page route="/org"></org-page>
         <org-page route="/org/:orgid"></org-page>
         <org-page route="/org/:orgid/edit" edit auth="[[user]]"></org-page>
+        
         <member-page route="/member"></member-page>
+        <member-page route="/member/:memberid"></member-page>
+        <member-page route="/member/:memberid/edit" edit auth="[[user]]"></member-page>
+        
         <second-page route="/second"></second-page>
         <not-authorized-page route="not-authorized"></not-authorized-page>
         <not-found-page route="not-found"></not-found-page>

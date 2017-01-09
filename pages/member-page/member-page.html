@@ -3,7 +3,7 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../web-components/project-madhouse-member/project-madhouse-member-behavior.html">
-<link rel="import" href="../../web-components/org-form/org-form.html">
+<link rel="import" href="../../web-components/member-form/member-form.html">
 
 <!-- Style dependency -->
 <link rel="import" href="member-page-style.html">
@@ -17,30 +17,24 @@
     </style>
 
     <div class="card">
-      <h1><a href="/member">Member Page</a> #[[params.orgid]]</h1>
-      <!--<template is="dom-if" if="[[orgId]]">-->
-      <!--  Yey-->
-      <!--</template>-->
-      <!--<template is="dom-if" if="[[!orgId]]">-->
-      <!--  None-->
-      <!--</template>-->
+      <h1><a href="/member">Member Page</a> #[[params.memberid]]</h1>
       
-      <template is="dom-if" if="{{showEdit}}">
-        <a href="/org/[[params.orgid]]/edit">
+      <template is="dom-if" if="{{checkEdit}}">
+        <a href="/member/[[params.memberid]]/edit">
           <paper-button>Edit</paper-button>
         </a>
       </template>
       <div hidden$="{{checkView}}">
-        <template is="dom-repeat" items="[[orgArray]]">
+        <template is="dom-repeat" items="[[memberArray]]">
             <paper-card heading="[[item.$key]]">
               <div class="card-content">
                 [[item.title]]
               </div>
               <div class="card-actions">
-                <a href="/org/[[item.$key]]" >
+                <a href="/member/[[item.$key]]" >
                   <paper-button>Details</paper-button>
                 </a>
-                <a href="/org/[[item.$key]]/edit">
+                <a href="/member/[[item.$key]]/edit">
                   <paper-button>Edit</paper-button>
                 </a>
               </div>
@@ -50,7 +44,7 @@
     </div>
     
     <template is="dom-if" if="[[edit]]">
-      <org-form orgid="[[params.orgid]]"></org-form>
+      <member-form memberid="[[params.memberid]]"></member-form>
     </template>
   </template>
 
@@ -63,13 +57,13 @@
       ],
       
       properties: {
-        orgArray: {
+        memberArray: {
           type: Array,
           notify: true,
           observer: 'checkArray'
         },
         
-        orgId: {
+        memId: {
           type: String,
           value: ''
         },
@@ -82,26 +76,28 @@
           type: Boolean,
           value: false,
           notify: true
+        },
+        
+        checkEdit: {
+          type: Boolean,
+          value: true,
+          notify: true
         }
       },
       
       observers: [
-        '_changeparamsOrgId(params.orgid)' 
+        '_changeparamsMemberId(params.memberid)' 
         
       ],
       
-      showEdit: function() {
-        return (this.edit && this.orgId != null) ? true : false;
-      },
-      
       checkArray: function() {
-        console.log(this.orgArray);
+        console.log(this.memberArray);
       },
       
-      _changeparamsOrgId: function(id) {
-        this.orgId = id || '';
-        this.checkView = (this.orgId == '') ? false : true;
-        console.log("change");
+      _changeparamsMemberId: function(id) {
+        this.memId = id || '';
+        this.checkView = (this.memId == '') ? false : true;
+        this.checkEdit = (this.memId == '' && !this.edit) ? false : true;
       },
       
       sampleTap: function(e) {
