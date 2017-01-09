@@ -1,0 +1,108 @@
+<!-- Polymer dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../web-components/project-madhouse-event/project-madhouse-event-behavior.html">
+<link rel="import" href="../../web-components/event-form/event-form.html">
+
+<!-- Style dependency -->
+<link rel="import" href="event-page-style.html">
+
+<dom-module id="event-page">
+  <template>
+    <style is="custom-style" include="event-page-style">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <div class="card">
+      <h1><a href="/event">Event Page</a> #[[params.eventid]]</h1>
+      
+      <template is="dom-if" if="{{checkEdit}}">
+        <a href="/event/[[params.eventid]]/edit">
+          <paper-button>Edit</paper-button>
+        </a>
+      </template>
+      <div hidden$="{{checkView}}">
+        <template is="dom-repeat" items="[[eventArray]]">
+            <paper-card heading="[[item.$key]]">
+              <div class="card-content">
+                [[item.title]]
+              </div>
+              <div class="card-actions">
+                <a href="/event/[[item.$key]]" >
+                  <paper-button>Details</paper-button>
+                </a>
+                <a href="/event/[[item.$key]]/edit">
+                  <paper-button>Edit</paper-button>
+                </a>
+              </div>
+            </paper-card>  
+        </template>  
+      </div>
+    </div>
+    
+    <template is="dom-if" if="[[edit]]">
+      <event-form eventid="[[params.eventid]]"></event-form>
+    </template>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'event-page',
+      
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseEventBehavior
+      ],
+      
+      properties: {
+        eventArray: {
+          type: Array,
+          notify: true,
+          observer: 'checkArray'
+        },
+        
+        eventId: {
+          type: String,
+          value: ''
+        },
+        edit: {
+          type: Boolean,
+          value: false
+        },
+        
+        checkView: {
+          type: Boolean,
+          value: false,
+          notify: true
+        },
+        
+        checkEdit: {
+          type: Boolean,
+          value: true,
+          notify: true
+        }
+      },
+      
+      observers: [
+        '_changeparamsEventId(params.eventid)' 
+        
+      ],
+      
+      checkArray: function() {
+        console.log(this.eventArray);
+      },
+      
+      _changeparamsEventId: function(id) {
+        this.eventId = id || '';
+        this.checkView = (this.eventId == '') ? false : true;
+        this.checkEdit = (this.eventId == '' && !this.edit) ? false : true;
+      },
+      
+      sampleTap: function(e) {
+        this.checkView = true;
+      }
+    });
+  </script>
+</dom-module>
