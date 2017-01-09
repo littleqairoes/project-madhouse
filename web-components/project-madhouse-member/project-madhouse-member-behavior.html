@@ -1,0 +1,94 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../web-components/project-madhouse-utils/project-madhouse-utils-behavior.html">
+
+<script>
+  (function(){
+    'use strict';
+    /** @polymerBehavior PROJECTMADHOUSE.ProjectMadhouseOrgBehavior */
+    PROJECTMADHOUSE.ProjectMadhouseMemberBehaviorImpl = {
+
+      properties: {
+        
+        memberPath: {
+          type: Object,
+          readOnly: true,
+          value: function() { return this._memberPath; }
+        },
+        memberGroup: {
+          type: String,
+          readOnly: true,
+          value: function() { return this._memberGroup; }
+        },
+        member: {
+          type: Object
+        },
+        memberArray: {
+          type: Array,
+          value: function() {
+            return [
+              {
+                $key: "name1",
+                title: "Person One"
+              },
+              {
+                $key: "name2",
+                title: "Person two"
+              },
+              {
+                $key: "name3",
+                title: "Person three"
+              },
+              {
+                $key: "name4",
+                title: "Person four"
+              },
+              {
+                $key: "name5",
+                title: "Person five"
+              },
+              {
+                $key: "name6",
+                title: "Person six"
+              },
+              {
+                $key: "name7",
+                title: "Person seven"
+              },
+              {
+                $key: "name8",
+                title: "Person eight"
+              },
+              {
+                $key: "name9",
+                title: "Person nine"
+              },
+              {
+                $key: "name10",
+                title: "Person ten"
+              }
+            ]
+          }
+        }
+      },
+
+      get _memberGroup() {
+        return 'memberGroup';
+      },
+
+      get _memberPath() {        
+        return {
+          members: this._version + '/' + this._memberGroup + '/org', // this is where the org objects are saved
+          owner: this._version + '/' + this._memberGroup + '/owner', // this is where you set the owner of the org          
+        };
+      },
+
+      
+
+      
+    };
+    PROJECTMADHOUSE.ProjectMadhouseMemberBehavior = [
+      PROJECTMADHOUSE.ProjectMadhouseUtilsBehavior,
+      PROJECTMADHOUSE.ProjectMadhouseMemberBehaviorImpl
+    ];
+  })();
+</script>

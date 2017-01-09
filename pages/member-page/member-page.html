@@ -2,22 +2,22 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../web-components/project-madhouse-org/project-madhouse-org-behavior.html">
+<link rel="import" href="../../web-components/project-madhouse-member/project-madhouse-member-behavior.html">
 <link rel="import" href="../../web-components/org-form/org-form.html">
 
 <!-- Style dependency -->
-<link rel="import" href="org-page-style.html">
+<link rel="import" href="member-page-style.html">
 
-<dom-module id="org-page">
+<dom-module id="member-page">
   <template>
-    <style is="custom-style" include="org-page-style">
+    <style is="custom-style" include="member-page-style">
       :host {
         display: block;
       }
     </style>
 
     <div class="card">
-      <h1><a href="/org">Org Page</a> #[[params.orgid]]</h1>
+      <h1><a href="/member">Member Page</a> #[[params.orgid]]</h1>
       <!--<template is="dom-if" if="[[orgId]]">-->
       <!--  Yey-->
       <!--</template>-->
@@ -25,7 +25,7 @@
       <!--  None-->
       <!--</template>-->
       
-      <template is="dom-if" if="{{checkEdit}}">
+      <template is="dom-if" if="{{showEdit}}">
         <a href="/org/[[params.orgid]]/edit">
           <paper-button>Edit</paper-button>
         </a>
@@ -56,10 +56,10 @@
 
   <script>
     Polymer({
-      is: 'org-page',
+      is: 'member-page',
       
       behaviors: [
-        PROJECTMADHOUSE.ProjectMadhouseOrgBehavior
+        PROJECTMADHOUSE.ProjectMadhouseMemberBehavior
       ],
       
       properties: {
@@ -75,19 +75,12 @@
         },
         edit: {
           type: Boolean,
-          value: false,
-          observer: 'showEdit',
+          value: false
         },
         
         checkView: {
           type: Boolean,
           value: false,
-          notify: true
-        },
-        
-        checkEdit: {
-          type: Boolean,
-          value: true,
           notify: true
         }
       },
@@ -98,6 +91,7 @@
       ],
       
       showEdit: function() {
+        return (this.edit && this.orgId != null) ? true : false;
       },
       
       checkArray: function() {
@@ -107,7 +101,6 @@
       _changeparamsOrgId: function(id) {
         this.orgId = id || '';
         this.checkView = (this.orgId == '') ? false : true;
-        this.checkEdit = (this.orgId == '' && !this.edit) ? false : true;
         console.log("change");
       },
       
