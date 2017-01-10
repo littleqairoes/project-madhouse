@@ -1,0 +1,94 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../web-components/project-madhouse-utils/project-madhouse-utils-behavior.html">
+
+<script>
+  (function(){
+    'use strict';
+    /** @polymerBehavior PROJECTMADHOUSE.ProjectMadhouseOrgBehavior */
+    PROJECTMADHOUSE.ProjectMadhouseEventBehaviorImpl = {
+
+      properties: {
+        
+        eventPath: {
+          type: Object,
+          readOnly: true,
+          value: function() { return this._eventPath; }
+        },
+        eventGroup: {
+          type: String,
+          readOnly: true,
+          value: function() { return this._eventGroup; }
+        },
+        event: {
+          type: Object
+        },
+        eventArray: {
+          type: Array,
+          value: function() {
+            return [
+              {
+                $key: "event1",
+                title: "Event One"
+              },
+              {
+                $key: "event2",
+                title: "Event two"
+              },
+              {
+                $key: "event3",
+                title: "Event three"
+              },
+              {
+                $key: "event4",
+                title: "Event four"
+              },
+              {
+                $key: "event5",
+                title: "Event five"
+              },
+              {
+                $key: "event6",
+                title: "Event six"
+              },
+              {
+                $key: "event7",
+                title: "Event seven"
+              },
+              {
+                $key: "event8",
+                title: "Event eight"
+              },
+              {
+                $key: "event9",
+                title: "Event nine"
+              },
+              {
+                $key: "event10",
+                title: "Event ten"
+              }
+            ]
+          }
+        }
+      },
+
+      get _eventGroup() {
+        return 'eventGroup';
+      },
+
+      get _eventPath() {        
+        return {
+          events: this._version + '/' + this._eventGroup + '/event', // this is where the org objects are saved
+          owner: this._version + '/' + this._eventGroup + '/owner', // this is where you set the owner of the org          
+        };
+      },
+
+      
+
+      
+    };
+    PROJECTMADHOUSE.ProjectMadhouseEventBehavior = [
+      PROJECTMADHOUSE.ProjectMadhouseUtilsBehavior,
+      PROJECTMADHOUSE.ProjectMadhouseEventBehaviorImpl
+    ];
+  })();
+</script>

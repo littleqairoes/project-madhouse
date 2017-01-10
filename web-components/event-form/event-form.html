@@ -1,0 +1,80 @@
+<!-- Polymer dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../project-madhouse-event/project-madhouse-event-behavior.html">
+
+
+<!-- Style dependency -->
+<link rel="import" href="event-form-style.html">
+
+<dom-module id="event-form">
+  <template>
+    <style is="custom-style" include="event-form-style">
+      :host {
+        display: block;
+      }
+    </style>
+    <div class="card">
+      <h1>[[eventid]]</h1>
+      <form is="iron-form" method="get" action="/event/[[eventid]]" id="submitOptions">
+        <paper-input name="key" label="Key" value="[[eventid]]" required></paper-input>
+        <paper-input name="title" label="Title" value="[[title]]" required></paper-input>
+        <a href="/event/[[eventid]]">
+          <paper-button raised on-tap="_submit">Submit</paper-button>
+        </a>
+      
+        <div class="output"></div>
+      </form>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'event-form',
+      
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseEventBehavior
+      ],
+
+      properties: {
+        eventid: {
+          type: String,
+          notify: true,
+          observer: 'checkId'
+        },
+        
+        title: {
+          type: String,
+          notify: true
+        }
+      },
+      
+      listeners: {
+        'iron-form-submit': 'check'
+      },
+      
+      checkId: function() {
+        for (var i=0; i<this.eventArray.length; i++) {
+          if (this.eventArray[i].$key == this.eventid) this.title = this.eventArray[i].title;
+        }
+      },
+      
+      _submit: function(event) {
+        this.$.submitOptions.submit();
+      },
+      
+      check: function(event) {
+        console.log(event.detail);
+        for (var i=0; i<this.eventArray.length; i++) {
+          if (this.eventArray[i].$key == event.detail.key) this.eventArray[i].title = event.detail.title;
+        }
+      }
+
+      
+    });
+  </script>
+</dom-module>

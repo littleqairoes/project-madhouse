@@ -27,6 +27,9 @@ Wham! It's all awesome now!
   <link rel="lazy-import" href="/pages/home-page/home-page.html" group="home-page">
   <link rel="lazy-import" href="/pages/first-page/first-page.html" group="first-page">
   <link rel="lazy-import" href="/pages/org-page/org-page.html" group="org-page">
+  <link rel="lazy-import" href="/pages/member-page/member-page.html" group="member-page">
+  <link rel="lazy-import" href="/pages/event-page/event-page.html" group="event-page">
+  <link rel="lazy-import" href="/pages/cause-page/cause-page.html" group="cause-page">
   <link rel="lazy-import" href="/pages/second-page/second-page.html" group="second-page">
   <link rel="lazy-import" href="/pages/not-authorized-page/not-authorized-page.html" group="not-authorized-page">
   <link rel="lazy-import" href="/pages/not-found-page/not-found-page.html" group="not-found-page">
@@ -59,9 +62,24 @@ Wham! It's all awesome now!
         <!-- ROUTER STARTS HERE -->
         <home-page route="/"></home-page>
         <first-page route="/first"></first-page>
+        
         <org-page route="/org"></org-page>
         <org-page route="/org/:orgid"></org-page>
         <org-page route="/org/:orgid/edit" edit auth="[[user]]"></org-page>
+        
+        <member-page route="/member"></member-page>
+        <member-page route="/member/:memberid"></member-page>
+        <member-page route="/member/:memberid/edit" edit auth="[[user]]"></member-page>
+        
+        <event-page route="/event"></event-page>
+        <event-page route="/event/:eventid"></event-page>
+        <event-page route="/event/:eventid/edit" edit auth="[[user]]"></event-page>
+        
+        <cause-page route="/cause"></cause-page>
+        <cause-page route="/cause/:causeid"></cause-page>
+        <cause-page route="/cause/:causeid/edit" edit auth="[[user]]"></cause-page>
+        
+        
         <second-page route="/second"></second-page>
         <not-authorized-page route="not-authorized"></not-authorized-page>
         <not-found-page route="not-found"></not-found-page>

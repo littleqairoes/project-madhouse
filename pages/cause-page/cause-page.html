@@ -2,45 +2,39 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../web-components/project-madhouse-org/project-madhouse-org-behavior.html">
-<link rel="import" href="../../web-components/org-form/org-form.html">
+<link rel="import" href="../../web-components/project-madhouse-cause/project-madhouse-cause-behavior.html">
+<link rel="import" href="../../web-components/cause-form/cause-form.html">
 
 <!-- Style dependency -->
-<link rel="import" href="org-page-style.html">
+<link rel="import" href="cause-page-style.html">
 
-<dom-module id="org-page">
+<dom-module id="cause-page">
   <template>
-    <style is="custom-style" include="org-page-style">
+    <style is="custom-style" include="cause-page-style">
       :host {
         display: block;
       }
     </style>
 
     <div class="card">
-      <h1><a href="/org">Org Page</a> #[[params.orgid]]</h1>
-      <!--<template is="dom-if" if="[[orgId]]">-->
-      <!--  Yey-->
-      <!--</template>-->
-      <!--<template is="dom-if" if="[[!orgId]]">-->
-      <!--  None-->
-      <!--</template>-->
+      <h1><a href="/cause">Cause Page</a> #[[params.causeid]]</h1>
       
       <template is="dom-if" if="{{checkEdit}}">
-        <a href="/org/[[params.orgid]]/edit">
+        <a href="/cause/[[params.causeid]]/edit">
           <paper-button>Edit</paper-button>
         </a>
       </template>
       <div hidden$="{{checkView}}">
-        <template is="dom-repeat" items="[[orgArray]]">
+        <template is="dom-repeat" items="[[causeArray]]">
             <paper-card heading="[[item.$key]]">
               <div class="card-content">
                 [[item.title]]
               </div>
               <div class="card-actions">
-                <a href="/org/[[item.$key]]" >
+                <a href="/cause/[[item.$key]]" >
                   <paper-button>Details</paper-button>
                 </a>
-                <a href="/org/[[item.$key]]/edit">
+                <a href="/cause/[[item.$key]]/edit">
                   <paper-button>Edit</paper-button>
                 </a>
               </div>
@@ -50,33 +44,32 @@
     </div>
     
     <template is="dom-if" if="[[edit]]">
-      <org-form orgid="[[params.orgid]]"></org-form>
+      <cause-form causeid="[[params.causeid]]"></cause-form>
     </template>
   </template>
 
   <script>
     Polymer({
-      is: 'org-page',
+      is: 'cause-page',
       
       behaviors: [
-        PROJECTMADHOUSE.ProjectMadhouseOrgBehavior
+        PROJECTMADHOUSE.ProjectMadhouseCauseBehavior
       ],
       
       properties: {
-        orgArray: {
+        causeArray: {
           type: Array,
           notify: true,
           observer: 'checkArray'
         },
         
-        orgId: {
+        causeId: {
           type: String,
           value: ''
         },
         edit: {
           type: Boolean,
-          value: false,
-          observer: 'showEdit',
+          value: false
         },
         
         checkView: {
@@ -93,22 +86,18 @@
       },
       
       observers: [
-        '_changeparamsOrgId(params.orgid)' 
+        '_changeparamsCauseId(params.causeid)' 
         
       ],
       
-      showEdit: function() {
-      },
-      
       checkArray: function() {
-        console.log(this.orgArray);
+        console.log(this.causeArray);
       },
       
-      _changeparamsOrgId: function(id) {
-        this.orgId = id || '';
-        this.checkView = (this.orgId == '') ? false : true;
-        this.checkEdit = (this.orgId == '' && !this.edit) ? false : true;
-        console.log("change");
+      _changeparamsCauseId: function(id) {
+        this.causeId = id || '';
+        this.checkView = (this.causeId == '') ? false : true;
+        this.checkEdit = (this.causeId == '' && !this.edit) ? false : true;
       },
       
       sampleTap: function(e) {
