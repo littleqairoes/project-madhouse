@@ -5,6 +5,7 @@
 <link rel="import" href="../../web-components/project-madhouse-event/project-madhouse-event-behavior.html">
 <link rel="import" href="../../web-components/event-form/event-form.html">
 <link rel="import" href="../../web-components/event-view/event-view.html">
+<link rel="import" href="../../web-components/event-summary/event-summary.html">
 
 <!-- Style dependency -->
 <link rel="import" href="event-page-style.html">
@@ -29,19 +30,7 @@
       </template>
       <div hidden$="{{checkView}}">
         <template is="dom-repeat" items="[[eventArray]]">
-            <paper-card heading="[[item.$key]]">
-              <div class="card-content">
-                [[item.title]]
-              </div>
-              <div class="card-actions">
-                <a href="/event/[[item.$key]]" >
-                  <paper-button>Details</paper-button>
-                </a>
-                <a href="/event/[[item.$key]]/edit">
-                  <paper-button>Edit</paper-button>
-                </a>
-              </div>
-            </paper-card>  
+          <event-summary eventid="[[item.$key]]"></event-summary>
         </template>  
       </div>
     </div>
