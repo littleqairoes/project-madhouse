@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../project-madhouse-org/project-madhouse-org-behavior.html">
 
 
 <!-- Style dependency -->
@@ -14,13 +15,21 @@
         display: block;
       }
     </style>
-    <h1>Single Org-View with orgid=[[orgid]]</h1>
+    <firebase-document
+      path="[[orgPath.org]]/[[orgid]]"
+      data="{{orgDetail}}"
+    >
+    </firebase-document>
+    <h1>Title [[orgDetail.title]]</h1>
 
   </template>
 
   <script>
     Polymer({
       is: 'org-view',
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseOrgBehavior
+      ],
       
       properties: {
         orgid: {
@@ -28,8 +37,8 @@
           notify: true
         },
         
-        title: {
-          type: String,
+        orgDetail: {
+          type: Object,
           notify: true
         }
       }
