@@ -17,6 +17,11 @@
         display: block;
       }
     </style>
+    
+    <firebase-query
+      path="[[memberPath.member]]"
+      data="{{memberArray}}">
+    </firebase-query>
 
     <div class="card">
       <h1><a href="/member">Member Page</a> #[[params.memberid]]</h1>
@@ -53,7 +58,6 @@
         memberArray: {
           type: Array,
           notify: true,
-          observer: 'checkArray'
         },
         
         memId: {

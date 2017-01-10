@@ -3,6 +3,7 @@
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../project-madhouse-member/project-madhouse-member-behavior.html">
 
 
 <!-- Style dependency -->
@@ -15,9 +16,13 @@
         display: block;
       }
     </style>
-    <paper-card heading="heading">
+    <firebase-document
+      path="[[memberPath.org]]/[[memberid]]"
+      data="{{memberDetail}}"
+    >
+    <paper-card heading="[[memberid]]">
       <div class="card-content">
-        title
+        [[orgDetail.title]]
       </div>
       <div class="card-actions">
         <a href="/member/[[memberid]]" >
@@ -34,6 +39,9 @@
   <script>
     Polymer({
       is: 'member-summary',
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseMemberBehavior
+      ],
       
       properties: {
         memberid: {
@@ -43,6 +51,11 @@
         
         title: {
           type: String,
+          notify: true
+        },
+        
+        memberDetail: {
+          type: Object,
           notify: true
         }
       }

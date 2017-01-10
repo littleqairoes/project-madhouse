@@ -22,7 +22,7 @@
         member: {
           type: Object
         },
-        memberArray: {
+        memberArray1: {
           type: Array,
           value: function() {
             return [
@@ -77,7 +77,7 @@
 
       get _memberPath() {        
         return {
-          member: this._version + '/' + this._memberGroup + '/org', // this is where the org objects are saved
+          member: this._version + '/' + this._memberGroup + '/member', // this is where the org objects are saved
           owner: this._version + '/' + this._memberGroup + '/owner', // this is where you set the owner of the org          
         };
       },

@@ -19,7 +19,7 @@
     </style>
     <firebase-query
       id="query"
-      path="alpha/orgGroup/org"
+      path="[[orgPath.org]]"
       data="{{orgArray}}">
     </firebase-query>
 
@@ -76,7 +76,6 @@
         orgArray: {
           type: Array,
           notify: true,
-          observer: 'checkArray'
         },
         
         orgId: {
@@ -108,10 +107,6 @@
       ],
       
       showEdit: function() {
-      },
-      
-      checkArray: function() {
-        console.log(this.orgArray);
       },
       
       _changeparamsOrgId: function(id) {
