@@ -1,0 +1,39 @@
+<!-- Polymer dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+
+<!-- Style dependency -->
+<link rel="import" href="org-view-style.html">
+
+<dom-module id="org-view">
+  <template>
+    <style is="custom-style" include="org-view-style">
+      :host {
+        display: block;
+      }
+    </style>
+    <h1>Single Org-View with orgid=[[orgid]]</h1>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'org-view',
+      
+      properties: {
+        orgid: {
+          type: String,
+          notify: true
+        },
+        
+        title: {
+          type: String,
+          notify: true
+        }
+      }
+      
+    });
+  </script>
+</dom-module>

@@ -4,6 +4,8 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../web-components/project-madhouse-cause/project-madhouse-cause-behavior.html">
 <link rel="import" href="../../web-components/cause-form/cause-form.html">
+<link rel="import" href="../../web-components/cause-view/cause-view.html">
+<link rel="import" href="../../web-components/cause-summary/cause-summary.html">
 
 <!-- Style dependency -->
 <link rel="import" href="cause-page-style.html">
@@ -18,7 +20,9 @@
 
     <div class="card">
       <h1><a href="/cause">Cause Page</a> #[[params.causeid]]</h1>
-      
+      <template is="dom-if" if="[[causeId]]">
+        <cause-view causeid="[[causeId]]"></cause-view>
+      </template>
       <template is="dom-if" if="{{checkEdit}}">
         <a href="/cause/[[params.causeid]]/edit">
           <paper-button>Edit</paper-button>
@@ -26,19 +30,7 @@
       </template>
       <div hidden$="{{checkView}}">
         <template is="dom-repeat" items="[[causeArray]]">
-            <paper-card heading="[[item.$key]]">
-              <div class="card-content">
-                [[item.title]]
-              </div>
-              <div class="card-actions">
-                <a href="/cause/[[item.$key]]" >
-                  <paper-button>Details</paper-button>
-                </a>
-                <a href="/cause/[[item.$key]]/edit">
-                  <paper-button>Edit</paper-button>
-                </a>
-              </div>
-            </paper-card>  
+          <cause-summary causeid="[[item.$key]]"></cause-summary>
         </template>  
       </div>
     </div>

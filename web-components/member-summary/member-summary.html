@@ -1,0 +1,52 @@
+<!-- Polymer dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+
+<!-- Style dependency -->
+<link rel="import" href="member-summary-style.html">
+
+<dom-module id="member-summary">
+  <template>
+    <style is="custom-style" include="member-summary-style">
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-card heading="heading">
+      <div class="card-content">
+        title
+      </div>
+      <div class="card-actions">
+        <a href="/member/[[memberid]]" >
+          <paper-button>details</paper-button>
+        </a>
+        <a href="/member/[[memberid]]/edit">
+          <paper-button>edit</paper-button>
+        </a>
+      </div>
+    </paper-card>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'member-summary',
+      
+      properties: {
+        memberid: {
+          type: String,
+          notify: true
+        },
+        
+        title: {
+          type: String,
+          notify: true
+        }
+      }
+      
+    });
+  </script>
+</dom-module>

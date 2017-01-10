@@ -1,0 +1,39 @@
+<!-- Polymer dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+
+<!-- Style dependency -->
+<link rel="import" href="member-view-style.html">
+
+<dom-module id="member-view">
+  <template>
+    <style is="custom-style" include="member-view-style">
+      :host {
+        display: block;
+      }
+    </style>
+    <h1>Single Member-View with memberid=[[memberid]]</h1>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'member-view',
+      
+      properties: {
+        memberid: {
+          type: String,
+          notify: true
+        },
+        
+        title: {
+          type: String,
+          notify: true
+        }
+      }
+      
+    });
+  </script>
+</dom-module>

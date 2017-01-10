@@ -1,0 +1,52 @@
+<!-- Polymer dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+
+<!-- Style dependency -->
+<link rel="import" href="event-summary-style.html">
+
+<dom-module id="event-summary">
+  <template>
+    <style is="custom-style" include="event-summary-style">
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-card heading="heading">
+      <div class="card-content">
+        title
+      </div>
+      <div class="card-actions">
+        <a href="/event/[[eventid]]" >
+          <paper-button>details</paper-button>
+        </a>
+        <a href="/event/[[eventid]]/edit">
+          <paper-button>edit</paper-button>
+        </a>
+      </div>
+    </paper-card>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'event-summary',
+      
+      properties: {
+        eventid: {
+          type: String,
+          notify: true
+        },
+        
+        title: {
+          type: String,
+          notify: true
+        }
+      }
+      
+    });
+  </script>
+</dom-module>
