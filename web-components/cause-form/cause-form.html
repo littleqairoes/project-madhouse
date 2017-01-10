@@ -1,0 +1,80 @@
+<!-- Polymer dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../project-madhouse-cause/project-madhouse-cause-behavior.html">
+
+
+<!-- Style dependency -->
+<link rel="import" href="cause-form-style.html">
+
+<dom-module id="cause-form">
+  <template>
+    <style is="custom-style" include="cause-form-style">
+      :host {
+        display: block;
+      }
+    </style>
+    <div class="card">
+      <h1>[[causeid]]</h1>
+      <form is="iron-form" method="get" action="/cause/[[causeid]]" id="submitOptions">
+        <paper-input name="key" label="Key" value="[[causeid]]" required></paper-input>
+        <paper-input name="title" label="Title" value="[[title]]" required></paper-input>
+        <a href="/cause/[[causeid]]">
+          <paper-button raised on-tap="_submit">Submit</paper-button>
+        </a>
+      
+        <div class="output"></div>
+      </form>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'cause-form',
+      
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseCauseBehavior
+      ],
+
+      properties: {
+        causeid: {
+          type: String,
+          notify: true,
+          observer: 'checkId'
+        },
+        
+        title: {
+          type: String,
+          notify: true
+        }
+      },
+      
+      listeners: {
+        'iron-form-submit': 'check'
+      },
+      
+      checkId: function() {
+        for (var i=0; i<this.causeArray.length; i++) {
+          if (this.causeArray[i].$key == this.causeid) this.title = this.causeArray[i].title;
+        }
+      },
+      
+      _submit: function(event) {
+        this.$.submitOptions.submit();
+      },
+      
+      check: function(event) {
+        console.log(event.detail);
+        for (var i=0; i<this.causeArray.length; i++) {
+          if (this.causeArray[i].$key == event.detail.key) this.causeArray[i].title = event.detail.title;
+        }
+      }
+
+      
+    });
+  </script>
+</dom-module>
