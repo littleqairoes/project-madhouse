@@ -21,6 +21,11 @@
     >
     </firebase-document>
     <h1>Title [[orgDetail.title]]</h1>
+    <a href="#" id="add-member" on-tap="_addMember">
+      <paper-button raised>Add Member</paper-button>
+    </a>
+    <paper-button raised>Add Event</paper-button>
+    <paper-button raised>Add Cause</paper-button>
 
   </template>
 
@@ -41,6 +46,13 @@
           type: Object,
           notify: true
         }
+      },
+      
+      _addMember: function(e) {
+        var el = this.$$('#add-member');
+        
+        var key = firebase.database().ref(this.orgPath.org).push().key;
+        el.setAttribute('href', '/member/' + key + '/edit');
       }
       
     });

@@ -25,17 +25,14 @@
 
     <div class="card">
       <h1><a href="/org">Org Page</a> #[[params.orgid]]</h1>
-      <a href="#" id="add-org" on-tap="_addOrg">
-        <paper-button raised>Add Org</paper-button>  
-      </a>
-      
-      
       <template is="dom-if" if="[[orgId]]">
         <org-view orgid="[[orgId]]"></org-view>
       </template>
-      <!--<template is="dom-if" if="[[!orgId]]">-->
-      <!--  None-->
-      <!--</template>-->
+      <template is="dom-if" if="[[!orgId]]">
+        <a href="#" id="add-org" on-tap="_addOrg">
+          <paper-button raised>Add Org</paper-button>  
+        </a>
+      </template>
       
       <template is="dom-if" if="{{checkEdit}}">
         <a href="/org/[[params.orgid]]/edit">
@@ -134,8 +131,7 @@
         //Generate a random unique key using firebase
         var key = firebase.database().ref(this.orgPath.org).push().key;
         
-        //Redirect to a edit page using the generated key
-        el.href = '/org/'+key;
+        //Redirect to an edit page using the generated key
         el.setAttribute('href', '/org/'+key + '/edit');
       }
     });
