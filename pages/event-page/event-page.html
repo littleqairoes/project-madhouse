@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../web-components/project-madhouse-event/project-madhouse-event-behavior.html">
 <link rel="import" href="../../web-components/event-form/event-form.html">
+<link rel="import" href="../../web-components/event-view/event-view.html">
 
 <!-- Style dependency -->
 <link rel="import" href="event-page-style.html">
@@ -18,7 +19,9 @@
 
     <div class="card">
       <h1><a href="/event">Event Page</a> #[[params.eventid]]</h1>
-      
+      <template is="dom-if" if="[[eventId]]">
+        <event-view eventid="[[eventId]]"></event-view>
+      </template>
       <template is="dom-if" if="{{checkEdit}}">
         <a href="/event/[[params.eventid]]/edit">
           <paper-button>Edit</paper-button>
