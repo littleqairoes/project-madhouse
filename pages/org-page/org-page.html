@@ -17,6 +17,11 @@
         display: block;
       }
     </style>
+    <firebase-query
+      id="query"
+      path="alpha/orgGroup/org"
+      data="{{orgArray}}">
+    </firebase-query>
 
     <div class="card">
       <h1><a href="/org">Org Page</a> #[[params.orgid]]</h1>

@@ -12,6 +12,11 @@
 
 <dom-module id="org-form">
   <template>
+    <firebase-document
+      path="[[orgPath.org]]/[[orgid]]"
+      data="{{orgDetail}}"
+    >
+    </firebase-document>
     <style is="custom-style" include="org-form-style">
       :host {
         display: block;
@@ -20,12 +25,11 @@
     <div class="card">
       <h1>[[orgid]]</h1>
       <form is="iron-form" method="get" action="/org/[[orgid]]" id="submitOptions">
-        <paper-input name="key" label="Key" value="[[orgid]]" required></paper-input>
-        <paper-input name="title" label="Title" value="[[title]]" required></paper-input>
+        <!--<paper-input name="key" label="Key" value="[[orgid]]" required></paper-input>-->
+        <paper-input name="title" label="Title" value="[[orgDetail.title]]" required></paper-input>
         <a href="/org/[[orgid]]">
           <paper-button raised on-tap="_submit">Submit</paper-button>
         </a>
-      
         <div class="output"></div>
       </form>
     </div>
@@ -33,9 +37,7 @@
   </template>
 
   <script>
-    Polymer({
-      is: 'org-form',
-      
+    Polymer({ is: 'org-form', 
       behaviors: [
         PROJECTMADHOUSE.ProjectMadhouseOrgBehavior
       ],
@@ -50,7 +52,12 @@
         title: {
           type: String,
           notify: true
-        }
+        },
+        
+        orgDetail: {
+          type: Object,
+          notify: true
+        },
       },
       
       listeners: {
@@ -58,9 +65,9 @@
       },
       
       checkId: function() {
-        for (var i=0; i<this.orgArray.length; i++) {
-          if (this.orgArray[i].$key == this.orgid) this.title = this.orgArray[i].title;
-        }
+        // for (var i=0; i<this.orgArray.length; i++) {
+        //   if (this.orgArray[i].$key == this.orgid) this.title = this.orgArray[i].title;
+        // }
       },
       
       _submit: function(event) {
@@ -69,10 +76,7 @@
       
       check: function(event) {
         console.log(event.detail);
-        for (var i=0; i<this.orgArray.length; i++) {
-          if (this.orgArray[i].$key == event.detail.key) this.orgArray[i].title = event.detail.title;
-        }
-        console.log(this.orgArray);
+        firebase.database().ref(this.orgPath.org + '/' + this.orgid).update(event.detail).then().catch(this._catchError.bind(this));
       }
 
       
