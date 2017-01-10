@@ -25,6 +25,11 @@
 
     <div class="card">
       <h1><a href="/org">Org Page</a> #[[params.orgid]]</h1>
+      <a href="#" id="add-org" on-tap="_addOrg">
+        <paper-button raised>Add Org</paper-button>  
+      </a>
+      
+      
       <template is="dom-if" if="[[orgId]]">
         <org-view orgid="[[orgId]]"></org-view>
       </template>
@@ -121,6 +126,17 @@
       
       sampleTap: function(e) {
         this.checkView = true;
+      },
+      
+      _addOrg: function(e) {
+        var el = this.$$('#add-org')
+        
+        //Generate a random unique key using firebase
+        var key = firebase.database().ref(this.orgPath.org).push().key;
+        
+        //Redirect to a edit page using the generated key
+        el.href = '/org/'+key;
+        el.setAttribute('href', '/org/'+key + '/edit');
       }
     });
   </script>
