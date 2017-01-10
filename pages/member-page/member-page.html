@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../web-components/project-madhouse-member/project-madhouse-member-behavior.html">
 <link rel="import" href="../../web-components/member-form/member-form.html">
+<link rel="import" href="../../web-components/member-view/member-view.html">
 
 <!-- Style dependency -->
 <link rel="import" href="member-page-style.html">
@@ -18,6 +19,9 @@
 
     <div class="card">
       <h1><a href="/member">Member Page</a> #[[params.memberid]]</h1>
+      <template is="dom-if" if="[[memId]]">
+        <member-view memberid="[[memId]]"></member-view>
+      </template>
       
       <template is="dom-if" if="{{checkEdit}}">
         <a href="/member/[[params.memberid]]/edit">

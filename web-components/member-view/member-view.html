@@ -5,25 +5,25 @@
 
 
 <!-- Style dependency -->
-<link rel="import" href="org-view-style.html">
+<link rel="import" href="member-view-style.html">
 
-<dom-module id="org-view">
+<dom-module id="member-view">
   <template>
-    <style is="custom-style" include="org-view-style">
+    <style is="custom-style" include="member-view-style">
       :host {
         display: block;
       }
     </style>
-    <h1>Single Org-View with orgid=[[orgid]]</h1>
+    <h1>Single Member-View with memberid=[[memberid]]</h1>
 
   </template>
 
   <script>
     Polymer({
-      is: 'org-view',
+      is: 'member-view',
       
       properties: {
-        orgid: {
+        memberid: {
           type: String,
           notify: true
         },
