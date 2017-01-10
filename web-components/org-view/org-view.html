@@ -24,8 +24,12 @@
     <a href="#" id="add-member" on-tap="_addMember">
       <paper-button raised>Add Member</paper-button>
     </a>
-    <paper-button raised>Add Event</paper-button>
-    <paper-button raised>Add Cause</paper-button>
+    <a href="#" id="add-event" on-tap="_addEvent">
+      <paper-button raised>Add Event</paper-button>
+    </a>
+    <a href="#" id="add-cause" on-tap="_addCause">
+      <paper-button raised>Add Cause</paper-button>
+    </a>
 
   </template>
 
@@ -51,8 +55,22 @@
       _addMember: function(e) {
         var el = this.$$('#add-member');
         
-        var key = firebase.database().ref(this.orgPath.org).push().key;
+        var key = firebase.database().ref(this.memberPath.org).push().key;
         el.setAttribute('href', '/member/' + key + '/edit');
+      },
+      
+      _addEvent: function(e) {
+        var el = this.$$('#add-event');
+        
+        var key = firebase.database().ref(this.eventPath.org).push().key;
+        el.setAttribute('href', '/event/' + key + '/edit');
+      },
+      
+      _addCause: function(e) {
+        var el = this.$$('#add-cause');
+        
+        var key = firebase.database().ref(this.causePath.org).push().key;
+        el.setAttribute('href', '/cause/' + key + '/edit');
       }
       
     });
