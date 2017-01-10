@@ -1,0 +1,52 @@
+<!-- Polymer dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+
+<!-- Style dependency -->
+<link rel="import" href="org-summary-style.html">
+
+<dom-module id="org-summary">
+  <template>
+    <style is="custom-style" include="org-summary-style">
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-card heading="heading">
+      <div class="card-content">
+        title
+      </div>
+      <div class="card-actions">
+        <a href="/org/[[orgid]]" >
+          <paper-button>details</paper-button>
+        </a>
+        <a href="/org/[[orgid]]/edit">
+          <paper-button>edit</paper-button>
+        </a>
+      </div>
+    </paper-card>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'org-summary',
+      
+      properties: {
+        orgid: {
+          type: String,
+          notify: true
+        },
+        
+        title: {
+          type: String,
+          notify: true
+        }
+      }
+      
+    });
+  </script>
+</dom-module>

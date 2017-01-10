@@ -5,6 +5,7 @@
 <link rel="import" href="../../web-components/project-madhouse-org/project-madhouse-org-behavior.html">
 <link rel="import" href="../../web-components/org-form/org-form.html">
 <link rel="import" href="../../web-components/org-view/org-view.html">
+<link rel="import" href="../../web-components/org-summary/org-summary.html">
 
 <!-- Style dependency -->
 <link rel="import" href="org-page-style.html">
@@ -33,19 +34,20 @@
       </template>
       <div hidden$="{{checkView}}">
         <template is="dom-repeat" items="[[orgArray]]">
-            <paper-card heading="[[item.$key]]">
-              <div class="card-content">
-                [[item.title]]
-              </div>
-              <div class="card-actions">
-                <a href="/org/[[item.$key]]" >
-                  <paper-button>Details</paper-button>
-                </a>
-                <a href="/org/[[item.$key]]/edit">
-                  <paper-button>Edit</paper-button>
-                </a>
-              </div>
-            </paper-card>  
+            <org-summary orgid="[[item.$key]]"></org-summary>
+            <!--<paper-card heading="[[item.$key]]">-->
+            <!--  <div class="card-content">-->
+            <!--    [[item.title]]-->
+            <!--  </div>-->
+            <!--  <div class="card-actions">-->
+            <!--    <a href="/org/[[item.$key]]" >-->
+            <!--      <paper-button>Details</paper-button>-->
+            <!--    </a>-->
+            <!--    <a href="/org/[[item.$key]]/edit">-->
+            <!--      <paper-button>Edit</paper-button>-->
+            <!--    </a>-->
+            <!--  </div>-->
+            <!--</paper-card>  -->
         </template>  
       </div>
     </div>
