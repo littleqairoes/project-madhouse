@@ -5,6 +5,7 @@
 <link rel="import" href="../../web-components/project-madhouse-member/project-madhouse-member-behavior.html">
 <link rel="import" href="../../web-components/member-form/member-form.html">
 <link rel="import" href="../../web-components/member-view/member-view.html">
+<link rel="import" href="../../web-components/member-summary/member-summary.html">
 
 <!-- Style dependency -->
 <link rel="import" href="member-page-style.html">
@@ -30,19 +31,7 @@
       </template>
       <div hidden$="{{checkView}}">
         <template is="dom-repeat" items="[[memberArray]]">
-            <paper-card heading="[[item.$key]]">
-              <div class="card-content">
-                [[item.title]]
-              </div>
-              <div class="card-actions">
-                <a href="/member/[[item.$key]]" >
-                  <paper-button>Details</paper-button>
-                </a>
-                <a href="/member/[[item.$key]]/edit">
-                  <paper-button>Edit</paper-button>
-                </a>
-              </div>
-            </paper-card>  
+          <member-summary memberid="[[item.$key]]"></member-summary>
         </template>  
       </div>
     </div>
