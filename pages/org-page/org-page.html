@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../web-components/project-madhouse-org/project-madhouse-org-behavior.html">
 <link rel="import" href="../../web-components/org-form/org-form.html">
+<link rel="import" href="../../web-components/org-view/org-view.html">
 
 <!-- Style dependency -->
 <link rel="import" href="org-page-style.html">
@@ -18,9 +19,9 @@
 
     <div class="card">
       <h1><a href="/org">Org Page</a> #[[params.orgid]]</h1>
-      <!--<template is="dom-if" if="[[orgId]]">-->
-      <!--  Yey-->
-      <!--</template>-->
+      <template is="dom-if" if="[[orgId]]">
+        <org-view orgid="[[orgId]]"></org-view>
+      </template>
       <!--<template is="dom-if" if="[[!orgId]]">-->
       <!--  None-->
       <!--</template>-->
