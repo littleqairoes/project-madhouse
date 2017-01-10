@@ -1,0 +1,39 @@
+<!-- Polymer dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+
+<!-- Style dependency -->
+<link rel="import" href="cause-view-style.html">
+
+<dom-module id="cause-view">
+  <template>
+    <style is="custom-style" include="cause-view-style">
+      :host {
+        display: block;
+      }
+    </style>
+    <h1>Single Cause-View with causeid=[[causeid]]</h1>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'cause-view',
+      
+      properties: {
+        causeid: {
+          type: String,
+          notify: true
+        },
+        
+        title: {
+          type: String,
+          notify: true
+        }
+      }
+      
+    });
+  </script>
+</dom-module>
