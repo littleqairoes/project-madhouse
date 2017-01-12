@@ -17,6 +17,11 @@
         display: block;
       }
     </style>
+    <firebase-query
+      id="query"
+      path="[[eventPath.event]]"
+      data="{{eventArray}}">
+    </firebase-query>
 
     <div class="card">
       <h1><a href="/event">Event Page</a> #[[params.eventid]]</h1>

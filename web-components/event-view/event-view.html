@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../project-madhouse-event/project-madhouse-event-behavior.html">
 
 
 <!-- Style dependency -->
@@ -14,13 +15,31 @@
         display: block;
       }
     </style>
-    <h1>Single Event-View with eventid=[[eventid]]</h1>
+    <firebase-document
+      path="[[eventPath.event]]/[[eventid]]"
+      data="{{eventDetail}}"
+    >
+    <h1>[[eventDetail.Name]]</h1>
+    Event Type: [[eventDetail.eventType]]
+    <br>
+    Description: [[eventDetail.Description]]
+    <br>
+    Participation: [[eventDetail.Participation]]
+    <br>
+    Seats Available: [[eventDetail.seatsAvailable]]
+    <br>
+    Date: [[eventDetail.Date]]
+    <br>
+    venue: [[eventDetail.Venue]]
 
   </template>
 
   <script>
     Polymer({
       is: 'event-view',
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseEventBehavior
+      ],
       
       properties: {
         eventid: {
@@ -30,6 +49,11 @@
         
         title: {
           type: String,
+          notify: true
+        },
+        
+        eventDetail: {
+          type: Object,
           notify: true
         }
       }
