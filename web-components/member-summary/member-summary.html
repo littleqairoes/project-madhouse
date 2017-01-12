@@ -17,12 +17,12 @@
       }
     </style>
     <firebase-document
-      path="[[memberPath.org]]/[[memberid]]"
+      path="[[memberPath.member]]/[[memberid]]"
       data="{{memberDetail}}"
     >
-    <paper-card heading="[[memberid]]">
+    <paper-card heading="[[memberDetail.Name]]">
       <div class="card-content">
-        [[orgDetail.title]]
+        "[[memberDetail.Mantra]]"
       </div>
       <div class="card-actions">
         <a href="/member/[[memberid]]" >

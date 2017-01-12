@@ -25,7 +25,11 @@
     <div class="card">
       <h1>[[memberid]]</h1>
       <form is="iron-form" method="get" action="/member/[[memberid]]" id="submitOptions">
-        <paper-input name="title" label="Title" value="[[memberDetail.title]]" required></paper-input>
+        <paper-input name="Name" label="Title" value="[[memberDetail.Name]]" required></paper-input>
+        <paper-input name="Mantra" label="Mantra" value="[[memberDetail.Mantra]]" required></paper-input>
+        <paper-input name="Course" label="Course" value="[[memberDetail.Course]]" required></paper-input>
+        <paper-input name="Contact" label="Contact" value="[[memberDetail.Contact]]" required></paper-input>
+        <paper-input name="Interests" label="Interests" value="[[memberDetail.Interests]]" required></paper-input>
         <a href="/member/[[memberid]]">
           <paper-button raised on-tap="_submit">Submit</paper-button>
         </a>
