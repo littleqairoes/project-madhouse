@@ -14,13 +14,20 @@
         display: block;
       }
     </style>
-    <h1>Single Member-View with memberid=[[memberid]]</h1>
+    <firebase-document
+      path="[[memberPath.member]]/[[memberid]]"
+      data="{{memberDetail}}"
+    >
+    <h1>Title [[memberDetail.title]]</h1>
 
   </template>
 
   <script>
     Polymer({
       is: 'member-view',
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseMemberBehavior
+      ],
       
       properties: {
         memberid: {
@@ -30,6 +37,11 @@
         
         title: {
           type: String,
+          notify: true
+        },
+        
+        memberDetail : {
+          type: Object,
           notify: true
         }
       }
