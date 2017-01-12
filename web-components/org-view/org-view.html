@@ -20,7 +20,15 @@
       data="{{orgDetail}}"
     >
     </firebase-document>
-    <h1>Title [[orgDetail.title]]</h1>
+    <h1>[[orgDetail.Name]]</h1>
+    Contact: [[orgDetail.Contact]]
+    <br>
+    Classification: [[orgDetail.Classification]]
+    <br>
+    OSA Recognized: [[orgDetail.osaRecognized]]
+    <br>
+    Last updated: [[orgDetail.lastUpdated]]
+    <br>
     <a href="#" id="add-member" on-tap="_addMember">
       <paper-button raised>Add Member</paper-button>
     </a>
