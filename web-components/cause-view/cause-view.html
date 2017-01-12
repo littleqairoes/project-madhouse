@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../project-madhouse-cause/project-madhouse-cause-behavior.html">
 
 
 <!-- Style dependency -->
@@ -14,13 +15,29 @@
         display: block;
       }
     </style>
-    <h1>Single Cause-View with causeid=[[causeid]]</h1>
+    <firebase-document
+      path="[[causePath.cause]]/[[causeid]]"
+      data="{{causeDetail}}"
+    >
+    <h1>{{causeDetail.Name}}</h1>
+    Pitch: {{causeDetail.Pitch}}
+    <br>
+    Pledge: {{causeDetail.Pledge}}
+    <br>
+    Goal: {{causeDetail.Goal}}
+    <br>
+    Raised: {{causeDetail.Raised}}
+    <br>
+    Backers: {{causeDetail.Backers}}
 
   </template>
 
   <script>
     Polymer({
       is: 'cause-view',
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseCauseBehavior
+      ],
       
       properties: {
         causeid: {
@@ -30,6 +47,11 @@
         
         title: {
           type: String,
+          notify: true
+        }, 
+        
+        causeDetail: {
+          type: Object,
           notify: true
         }
       }
