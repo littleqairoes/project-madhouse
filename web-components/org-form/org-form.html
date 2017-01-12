@@ -25,12 +25,10 @@
     <div class="card">
       <h1>[[orgid]]</h1>
       <form is="iron-form" method="get" action="/org/[[orgid]]" id="submitOptions">
-        <!--<paper-input name="key" label="Key" value="[[orgid]]" required></paper-input>-->
         <paper-input name="title" label="Title" value="[[orgDetail.title]]" required></paper-input>
         <a href="/org/[[orgid]]">
           <paper-button raised on-tap="_submit">Submit</paper-button>
         </a>
-        <div class="output"></div>
       </form>
     </div>
 
