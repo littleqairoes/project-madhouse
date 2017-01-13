@@ -3,6 +3,7 @@
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../project-madhouse-org/project-madhouse-org-behavior.html">
 
 
 <!-- Style dependency -->
@@ -15,9 +16,16 @@
         display: block;
       }
     </style>
-    <paper-card heading="heading">
+    <firebase-document
+      path="[[orgPath.org]]/[[orgid]]"
+      data="{{orgDetail}}"
+    >
+    </firebase-document>
+    <paper-card heading="[[orgDetail.Name]]">
       <div class="card-content">
-        title
+        "[[orgDetail.Mantra]]"
+        
+        
       </div>
       <div class="card-actions">
         <a href="/org/[[orgid]]" >
@@ -34,6 +42,9 @@
   <script>
     Polymer({
       is: 'org-summary',
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseOrgBehavior
+      ],
       
       properties: {
         orgid: {
@@ -43,6 +54,11 @@
         
         title: {
           type: String,
+          notify: true
+        },
+        
+        orgDetail: {
+          type: Object,
           notify: true
         }
       }

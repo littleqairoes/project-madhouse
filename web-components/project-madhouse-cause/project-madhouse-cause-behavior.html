@@ -22,7 +22,7 @@
         cause: {
           type: Object
         },
-        causeArray: {
+        causeArray1: {
           type: Array,
           value: function() {
             return [
@@ -77,7 +77,7 @@
 
       get _causePath() {        
         return {
-          causes: this._version + '/' + this._causeGroup + '/cause', // this is where the org objects are saved
+          cause: this._version + '/' + this._causeGroup + '/cause', // this is where the org objects are saved
           owner: this._version + '/' + this._causeGroup + '/owner', // this is where you set the owner of the org          
         };
       },

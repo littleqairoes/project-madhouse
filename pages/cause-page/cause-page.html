@@ -17,7 +17,11 @@
         display: block;
       }
     </style>
-
+    <firebase-query
+      id="query"
+      path="[[causePath.cause]]"
+      data="{{causeArray}}">
+    </firebase-query>
     <div class="card">
       <h1><a href="/cause">Cause Page</a> #[[params.causeid]]</h1>
       <template is="dom-if" if="[[causeId]]">

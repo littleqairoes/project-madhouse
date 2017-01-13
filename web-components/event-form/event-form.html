@@ -17,11 +17,20 @@
         display: block;
       }
     </style>
+    <firebase-document
+      path="[[eventPath.event]]/[[eventid]]"
+      data="{{eventDetail}}"
+    >
     <div class="card">
       <h1>[[eventid]]</h1>
       <form is="iron-form" method="get" action="/event/[[eventid]]" id="submitOptions">
-        <paper-input name="key" label="Key" value="[[eventid]]" required></paper-input>
-        <paper-input name="title" label="Title" value="[[title]]" required></paper-input>
+        <paper-input name="Name" label="Name" value="[[eventDetail.Name]]" required></paper-input>
+        <paper-input name="eventType" label="Event Type" value="[[eventDetail.eventType]]" required></paper-input>
+        <paper-input name="Description" label="Description" value="[[eventDetail.Description]]" required></paper-input>
+        <paper-input name="Participation" label="Participation" value="[[eventDetail.Participation]]" required></paper-input>
+        <paper-input name="seatsAvailable" label="Seats Available" value="[[eventDetail.seatsAvailable]]" required></paper-input>
+        <paper-input name="Date" label="Date" value="[[eventDetail.Date]]" required></paper-input>
+        <paper-input name="Venue" label="Venue" value="[[eventDetail.Venue]]" required></paper-input>
         <a href="/event/[[eventid]]">
           <paper-button raised on-tap="_submit">Submit</paper-button>
         </a>
@@ -50,6 +59,11 @@
         title: {
           type: String,
           notify: true
+        },
+        
+        eventDetail: {
+          type: Object,
+          notify: true
         }
       },
       
@@ -58,9 +72,7 @@
       },
       
       checkId: function() {
-        for (var i=0; i<this.eventArray.length; i++) {
-          if (this.eventArray[i].$key == this.eventid) this.title = this.eventArray[i].title;
-        }
+        
       },
       
       _submit: function(event) {
@@ -69,9 +81,7 @@
       
       check: function(event) {
         console.log(event.detail);
-        for (var i=0; i<this.eventArray.length; i++) {
-          if (this.eventArray[i].$key == event.detail.key) this.eventArray[i].title = event.detail.title;
-        }
+        firebase.database().ref(this.eventPath.event + '/' + this.eventid).update(event.detail).then().catch(this._catchError.bind(this));
       }
 
       

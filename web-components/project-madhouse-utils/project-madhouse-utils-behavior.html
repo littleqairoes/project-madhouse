@@ -16,7 +16,7 @@
       },
 
       get _version() {
-        return 'v1'
+        return 'alpha'
       },
 
       get _todayUTC() {
@@ -87,8 +87,10 @@
           }
         }
         
+        console.log(err)
+        
         var error = err.detail ? err.detail : err;
-        this._showMessage('Error: ' + error.detail && error.detail.message ? error.detail.message : error.message, true);
+        this._showMessage('Error: ' + error.detail ? error.detail.message : error.message, true);
       },
       
       _textToUrl: function(text) {

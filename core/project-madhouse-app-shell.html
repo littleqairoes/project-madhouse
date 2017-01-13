@@ -1,5 +1,6 @@
 <!-- Polymer Global dependencies -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="../bower_components/qairoe-app-layout/qairoe-app-layout.html">
 <link rel="import" href="../bower_components/qairoe-app-router/qairoe-app-router.html">
 
@@ -38,6 +39,13 @@ Wham! It's all awesome now!
   <template>
     <style is="custom-style">
     </style>
+    <firebase-app 
+        auth-domain="project-madhouse.firebaseapp.com"
+        database-url="https://project-madhouse.firebaseio.com"
+        api-key="AIzaSyCnGp9BMKGVMs6Ld8Cw2m8-TLpm9AiuJW8"
+        storage-bucket="project-madhouse.appspot.com"
+    >
+    </firebase-app>
 
     <qairoe-app-layout scroll-progress="{{scrollProgress}}">
 

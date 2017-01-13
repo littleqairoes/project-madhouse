@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../project-madhouse-org/project-madhouse-org-behavior.html">
 
 
 <!-- Style dependency -->
@@ -14,13 +15,38 @@
         display: block;
       }
     </style>
-    <h1>Single Org-View with orgid=[[orgid]]</h1>
+    <firebase-document
+      path="[[orgPath.org]]/[[orgid]]"
+      data="{{orgDetail}}"
+    >
+    </firebase-document>
+    <h1>[[orgDetail.Name]]</h1>
+    Contact: [[orgDetail.Contact]]
+    <br>
+    Classification: [[orgDetail.Classification]]
+    <br>
+    OSA Recognized: [[orgDetail.osaRecognized]]
+    <br>
+    Last updated: [[orgDetail.lastUpdated]]
+    <br>
+    <a href="#" id="add-member" on-tap="_addMember">
+      <paper-button raised>Add Member</paper-button>
+    </a>
+    <a href="#" id="add-event" on-tap="_addEvent">
+      <paper-button raised>Add Event</paper-button>
+    </a>
+    <a href="#" id="add-cause" on-tap="_addCause">
+      <paper-button raised>Add Cause</paper-button>
+    </a>
 
   </template>
 
   <script>
     Polymer({
       is: 'org-view',
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseOrgBehavior
+      ],
       
       properties: {
         orgid: {
@@ -28,10 +54,31 @@
           notify: true
         },
         
-        title: {
-          type: String,
+        orgDetail: {
+          type: Object,
           notify: true
         }
+      },
+      
+      _addMember: function(e) {
+        var el = this.$$('#add-member');
+        
+        var key = firebase.database().ref(this.memberPath.org).push().key;
+        el.setAttribute('href', '/member/' + key + '/edit');
+      },
+      
+      _addEvent: function(e) {
+        var el = this.$$('#add-event');
+        
+        var key = firebase.database().ref(this.eventPath.org).push().key;
+        el.setAttribute('href', '/event/' + key + '/edit');
+      },
+      
+      _addCause: function(e) {
+        var el = this.$$('#add-cause');
+        
+        var key = firebase.database().ref(this.causePath.org).push().key;
+        el.setAttribute('href', '/cause/' + key + '/edit');
       }
       
     });

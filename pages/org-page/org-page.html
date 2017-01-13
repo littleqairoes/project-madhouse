@@ -17,15 +17,22 @@
         display: block;
       }
     </style>
+    <firebase-query
+      id="query"
+      path="[[orgPath.org]]"
+      data="{{orgArray}}">
+    </firebase-query>
 
     <div class="card">
       <h1><a href="/org">Org Page</a> #[[params.orgid]]</h1>
       <template is="dom-if" if="[[orgId]]">
         <org-view orgid="[[orgId]]"></org-view>
       </template>
-      <!--<template is="dom-if" if="[[!orgId]]">-->
-      <!--  None-->
-      <!--</template>-->
+      <template is="dom-if" if="[[!orgId]]">
+        <a href="#" id="add-org" on-tap="_addOrg">
+          <paper-button raised>Add Org</paper-button>  
+        </a>
+      </template>
       
       <template is="dom-if" if="{{checkEdit}}">
         <a href="/org/[[params.orgid]]/edit">
@@ -69,7 +76,6 @@
         orgArray: {
           type: Array,
           notify: true,
-          observer: 'checkArray'
         },
         
         orgId: {
@@ -103,10 +109,6 @@
       showEdit: function() {
       },
       
-      checkArray: function() {
-        console.log(this.orgArray);
-      },
-      
       _changeparamsOrgId: function(id) {
         this.orgId = id || '';
         this.checkView = (this.orgId == '') ? false : true;
@@ -116,6 +118,16 @@
       
       sampleTap: function(e) {
         this.checkView = true;
+      },
+      
+      _addOrg: function(e) {
+        var el = this.$$('#add-org')
+        
+        //Generate a random unique key using firebase
+        var key = firebase.database().ref(this.orgPath.org).push().key;
+        
+        //Redirect to an edit page using the generated key
+        el.setAttribute('href', '/org/'+key + '/edit');
       }
     });
   </script>

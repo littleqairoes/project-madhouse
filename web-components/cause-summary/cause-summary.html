@@ -3,6 +3,7 @@
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../project-madhouse-cause/project-madhouse-cause-behavior.html">
 
 
 <!-- Style dependency -->
@@ -15,9 +16,13 @@
         display: block;
       }
     </style>
-    <paper-card heading="heading">
+    <firebase-document
+      path="[[causePath.cause]]/[[causeid]]"
+      data="{{causeDetail}}"
+    >
+    <paper-card heading="{{causeDetail.Name}}">
       <div class="card-content">
-        title
+       {{causeDetail.Pitch}}
       </div>
       <div class="card-actions">
         <a href="/cause/[[causeid]]" >
@@ -34,6 +39,9 @@
   <script>
     Polymer({
       is: 'cause-summary',
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseCauseBehavior
+      ],
       
       properties: {
         causeid: {
@@ -43,6 +51,11 @@
         
         title: {
           type: String,
+          notify: true
+        },
+        
+        causeDetail: {
+          type: Object,
           notify: true
         }
       }
