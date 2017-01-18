@@ -3,6 +3,8 @@
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../project-madhouse-org/project-madhouse-org-behavior.html">
 
 
@@ -15,27 +17,60 @@
       :host {
         display: block;
       }
+      
+      .summary {
+        text-align: center;
+        /*height: 5vh;*/
+      }
+      
+      paper-card {
+        width: 25vw;
+      }
+      
+      paper-card img {
+        width: 25vw;
+        height: 30vh;
+        background-size: cover;
+      }
+      
+      .text-header {
+        color: black;
+        text-align: center;
+        font-size: 120%;
+        font-weight: bold;
+      }
+      
+      .card-content {
+        text-align: left;
+        font-size: 80%;
+      }
+      
+      .link {
+        text-decoration: none;
+        color: black;
+      }
     </style>
     <firebase-document
       path="[[orgPath.org]]/[[orgid]]"
       data="{{orgDetail}}"
     >
     </firebase-document>
-    <paper-card heading="[[orgDetail.Name]]">
-      <div class="card-content">
-        "[[orgDetail.Mantra]]"
-        
-        
-      </div>
-      <div class="card-actions">
-        <a href="/org/[[orgid]]" >
-          <paper-button>details</paper-button>
+    <div class="summary">
+      <paper-card>
+        <a href="/org/[[orgid]]">
+          <img src="[[orgDetail.img]]">
         </a>
-        <a href="/org/[[orgid]]/edit">
-          <paper-button>edit</paper-button>
-        </a>
-      </div>
-    </paper-card>
+        <div class="card-content">
+          <div class="text-header">
+            <a class="link" href="/org/[[orgid]]" >
+              [[orgDetail.Name]]
+            </a>
+          </div>
+          [[orgDetail.Mantra]]
+        </div>
+      </paper-card>  
+    </div>
+    
 
   </template>
 

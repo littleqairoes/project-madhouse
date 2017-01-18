@@ -1,5 +1,8 @@
 <!-- Polymer dependencies -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/simple-carousel/simple-carousel.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../web-components/org-summary/org-summary.html">
 
 <!-- Style dependency -->
 <link rel="import" href="home-page-style.html">
@@ -9,20 +12,90 @@
     <style is="custom-style" include="home-page-style">
       :host {
         display: block;
+        margin: 0;
+        padding: 0;
+        text-align:center;
       }
+      carousel-slide img {
+        height: 50vh;
+        width: 100%;
+      }
+      
+      .text-heading {
+        font-size: 150%;
+        text-align: left;
+        color: black;
+      }
+      
+      .row-center {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+      }
+      
+      .row {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified)
+      }
+      
+      .link {
+        text-decoration: none;
+        text-align: right;
+        color: gray;
+        height: 3.3vh;
+        margin-top:3.3vh;
+        margin-right:3.3vh;
+      }
+      
+      .link:hover {
+        color: black;
+      }
+   
+  
+			
     </style>
-
-    <div class="card">
-      <div class="circle">1</div>
-      <h1>View One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
+  <simple-carousel infinite-loop="true" auto="true" transition-time="5000">
+    <carousel-slide>
+      <a href="/org/org2">
+        <img src="../../images/acss.jpg">
+      </a>
+    </carousel-slide>
+    <carousel-slide>
+      <a href="/org/org4">
+        <img src="../../images/ff.jpg">
+      </a>
+    </carousel-slide>
+    <carousel-slide>
+      <a href="/org/org5">
+        <img src="../../images/soma.png">
+      </a>
+    </carousel-slide>         
+  </simple-carousel> 
+  
+  <div class="card">
+    <div class="row">
+      <p class="text-heading">Active and Recruiting Organizations</p>
+      <a class="link" href="/org">
+        See more
+      </a>  
+      
     </div>
+    <div class="row-center">
+      <org-summary orgid="org1"></org-summary>
+      <org-summary orgid="org4"></org-summary>  
+      <org-summary orgid="org2"></org-summary>  
+    </div>
+    
+  </div>
+      
+    
   </template>
 
   <script>
     Polymer({
-      is: 'home-page'
+      is: 'home-page',
+      properties: {
+        
+      }
     });
   </script>
 </dom-module>
