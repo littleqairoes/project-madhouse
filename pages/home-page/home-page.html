@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/simple-carousel/simple-carousel.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../web-components/org-summary/org-summary.html">
+<link rel="import" href="../../web-components/event-summary/event-summary.html">
 
 <!-- Style dependency -->
 <link rel="import" href="home-page-style.html">
@@ -86,7 +87,22 @@
     </div>
     
   </div>
+  
+  <div class="card">
+    <div class="row">
+      <p class="text-heading">Recommended Events</p>
+      <a class="link" href="/event">
+        See more
+      </a>  
       
+    </div>
+    <div class="row-center">
+      <event-summary eventid="event1"></event-summary>
+      <event-summary eventid="event2"></event-summary>  
+      <event-summary eventid="event3"></event-summary>  
+    </div>
+    
+  </div>   
     
   </template>
 
