@@ -14,12 +14,18 @@
       :host {
         display: block;
       }
+      
+      img {
+        width: 25vw;
+        height: 30vh;
+      }
     </style>
     <firebase-document
       path="[[orgPath.org]]/[[orgid]]"
       data="{{orgDetail}}"
     >
     </firebase-document>
+    <img src="[[orgDetail.img]]">
     <h1>[[orgDetail.Name]]</h1>
     Contact: [[orgDetail.Contact]]
     <br>
