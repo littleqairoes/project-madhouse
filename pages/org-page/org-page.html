@@ -13,7 +13,7 @@
 
 <dom-module id="org-page">
   <template>
-    <style is="custom-style" include="org-page-style">
+    <style is="custom-style" include="org-page-style ">
       :host {
         display: block;
       }
@@ -28,7 +28,21 @@
       }
       
       .org-list {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-flex-5);
       }
+
+      .div-center {
+        @apply(--layout-horizontal);
+        
+      }
+
+      .spacer {
+        @apply(--layout-flex);
+      }
+
+
     </style>
     <firebase-query
       id="query"
@@ -52,11 +66,22 @@
           <paper-button>Edit</paper-button>
         </a>
       </template>
-      <div class="org-list" hidden$="{{checkView}}">
-        <template is="dom-repeat" items="[[orgArray]]">
-          <org-summary orgid="[[item.$key]]"></org-summary>
-        </template>  
-      </div>
+      <template is="dom-if" if="{{!checkView}}">
+        <!--<div class="div-center">-->
+          <!--<div class="spacer"></div>-->
+          <div class="org-list">
+            <template is="dom-repeat" items="[[orgArray]]">
+              <org-summary orgid="[[item.$key]]" class="flex"></org-summary>
+            </template>  
+          </div>
+          <!--<div class="spacer"></div>-->
+        <!--</div>-->
+        
+      </template>
+      <!--<div hidden$="{{checkView}}">
+        
+      </div>-->
+      
     </div>
     
     <template is="dom-if" if="[[edit]]">
