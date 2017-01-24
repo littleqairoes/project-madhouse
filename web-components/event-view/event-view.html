@@ -14,11 +14,17 @@
       :host {
         display: block;
       }
+      
+      img {
+        width: 25vw;
+        height: 30vh;
+      }
     </style>
     <firebase-document
       path="[[eventPath.event]]/[[eventid]]"
       data="{{eventDetail}}"
     >
+    <img src="[[eventDetail.img]]">
     <h1>[[eventDetail.Name]]</h1>
     Event Type: [[eventDetail.eventType]]
     <br>
@@ -30,7 +36,7 @@
     <br>
     Date: [[eventDetail.Date]]
     <br>
-    venue: [[eventDetail.Venue]]
+    Venue: [[eventDetail.Venue]]
 
   </template>
 

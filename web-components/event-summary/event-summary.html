@@ -15,24 +15,58 @@
       :host {
         display: block;
       }
+      
+      .summary {
+        text-align: center;
+      }
+      
+      paper-card {
+        width: 25vw;
+      }
+      
+      paper-card img {
+        width: 25vw;
+        height: 30vh;
+        background-size: cover;
+      }
+      
+      .text-header {
+        color: black;
+        text-align: center;
+        font-size: 120%;
+        font-weight: bold;
+      }
+      
+      .card-content {
+        text-align: left;
+        font-size: 80%;
+      }
+      
+      .link {
+        text-decoration: none;
+        color: black;
+      }
     </style>
     <firebase-document
       path="[[eventPath.event]]/[[eventid]]"
       data="{{eventDetail}}"
     >
-    <paper-card heading="{{eventDetail.Name}}">
-      <div class="card-content">
-        {{eventDetail.Description}}
-      </div>
-      <div class="card-actions">
-        <a href="/event/[[eventid]]" >
-          <paper-button>details</paper-button>
+      
+    <div class="summary">
+      <paper-card>
+        <a href="/event/[[eventid]]">
+          <img src="[[eventDetail.img]]">
         </a>
-        <a href="/event/[[eventid]]/edit">
-          <paper-button>edit</paper-button>
-        </a>
-      </div>
-    </paper-card>
+        <div class="card-content">
+          <div class="text-header">
+            <a class="link" href="/event/[[eventid]]" >
+              [[eventDetail.Name]]
+            </a>
+          </div>
+          [[eventDetail.Description]]
+        </div>
+      </paper-card>  
+    </div>
 
   </template>
 

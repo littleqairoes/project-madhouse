@@ -16,6 +16,14 @@
       :host {
         display: block;
       }
+      .anchor-header {
+        text-decoration: none;
+        color: gray;
+      }
+      
+      .anchor-header:hover {
+        color: black;
+      }
     </style>
     <firebase-query
       id="query"
@@ -24,7 +32,7 @@
     </firebase-query>
 
     <div class="card">
-      <h1><a href="/event">Event Page</a> #[[params.eventid]]</h1>
+      <h1><a href="/event" class="anchor-header">Event Page</a> #[[params.eventid]]</h1>
       <template is="dom-if" if="[[eventId]]">
         <event-view eventid="[[eventId]]"></event-view>
       </template>

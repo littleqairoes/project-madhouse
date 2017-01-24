@@ -6,16 +6,43 @@
 <link rel="import" href="../../web-components/org-form/org-form.html">
 <link rel="import" href="../../web-components/org-view/org-view.html">
 <link rel="import" href="../../web-components/org-summary/org-summary.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <!-- Style dependency -->
 <link rel="import" href="org-page-style.html">
 
 <dom-module id="org-page">
   <template>
-    <style is="custom-style" include="org-page-style">
+    <style is="custom-style" include="org-page-style ">
       :host {
         display: block;
       }
+      
+      .anchor-header {
+        text-decoration: none;
+        color: gray;
+      }
+      
+      .anchor-header:hover {
+        color: black;
+      }
+      
+      .org-list {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-flex-5);
+      }
+
+      .div-center {
+        @apply(--layout-horizontal);
+        
+      }
+
+      .spacer {
+        @apply(--layout-flex);
+      }
+
+
     </style>
     <firebase-query
       id="query"
@@ -24,7 +51,7 @@
     </firebase-query>
 
     <div class="card">
-      <h1><a href="/org">Org Page</a> #[[params.orgid]]</h1>
+      <h1><a href="/org" class="anchor-header">Org Page</a> #[[params.orgid]]</h1>
       <template is="dom-if" if="[[orgId]]">
         <org-view orgid="[[orgId]]"></org-view>
       </template>
@@ -39,24 +66,22 @@
           <paper-button>Edit</paper-button>
         </a>
       </template>
-      <div hidden$="{{checkView}}">
-        <template is="dom-repeat" items="[[orgArray]]">
-            <org-summary orgid="[[item.$key]]"></org-summary>
-            <!--<paper-card heading="[[item.$key]]">-->
-            <!--  <div class="card-content">-->
-            <!--    [[item.title]]-->
-            <!--  </div>-->
-            <!--  <div class="card-actions">-->
-            <!--    <a href="/org/[[item.$key]]" >-->
-            <!--      <paper-button>Details</paper-button>-->
-            <!--    </a>-->
-            <!--    <a href="/org/[[item.$key]]/edit">-->
-            <!--      <paper-button>Edit</paper-button>-->
-            <!--    </a>-->
-            <!--  </div>-->
-            <!--</paper-card>  -->
-        </template>  
-      </div>
+      <template is="dom-if" if="{{!checkView}}">
+        <!--<div class="div-center">-->
+          <!--<div class="spacer"></div>-->
+          <div class="org-list">
+            <template is="dom-repeat" items="[[orgArray]]">
+              <org-summary orgid="[[item.$key]]" class="flex"></org-summary>
+            </template>  
+          </div>
+          <!--<div class="spacer"></div>-->
+        <!--</div>-->
+        
+      </template>
+      <!--<div hidden$="{{checkView}}">
+        
+      </div>-->
+      
     </div>
     
     <template is="dom-if" if="[[edit]]">
