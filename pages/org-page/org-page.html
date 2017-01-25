@@ -28,6 +28,8 @@
       }
       
       .org-list {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
       }
     </style>
     <firebase-query
@@ -52,11 +54,14 @@
           <paper-button>Edit</paper-button>
         </a>
       </template>
-      <div class="org-list" hidden$="{{checkView}}">
-        <template is="dom-repeat" items="[[orgArray]]">
-          <org-summary orgid="[[item.$key]]"></org-summary>
-        </template>  
-      </div>
+      <template is="dom-if" if="{{!checkView}}">
+        <div class="org-list">
+          <template is="dom-repeat" items="[[orgArray]]">
+            <org-summary orgid="[[item.$key]]"></org-summary>
+          </template>  
+        </div>  
+      </template>
+      
     </div>
     
     <template is="dom-if" if="[[edit]]">
