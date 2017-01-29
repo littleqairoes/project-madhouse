@@ -54,55 +54,61 @@
   
 			
     </style>
-  <simple-carousel infinite-loop="true" auto="true" transition-time="5000">
-    <carousel-slide>
-      <a href="/org/org2">
-        <img src="../../images/acss.jpg">
-      </a>
-    </carousel-slide>
-    <carousel-slide>
-      <a href="/org/org4">
-        <img src="../../images/ff.jpg">
-      </a>
-    </carousel-slide>
-    <carousel-slide>
-      <a href="/org/org5">
-        <img src="../../images/soma.png">
-      </a>
-    </carousel-slide>         
-  </simple-carousel> 
-  
-  <div class="card">
-    <div class="row">
-      <p class="text-heading">Active and Recruiting Organizations</p>
-      <a class="link" href="/org">
-        See more
-      </a>  
-      
-    </div>
-    <div class="row-center">
-      <org-summary orgid="org1"></org-summary>
-      <org-summary orgid="org4"></org-summary>  
-      <org-summary orgid="org2"></org-summary>  
-    </div>
-    
-  </div>
-  
-  <div class="card">
-    <div class="row">
-      <p class="text-heading">Recommended Events</p>
-      <a class="link" href="/event">
-        See more
-      </a>  
-      
-    </div>
-    <div class="row-center">
-      <event-summary eventid="event1"></event-summary>
-      <event-summary eventid="event2"></event-summary>  
-      <event-summary eventid="event3"></event-summary>  
-    </div>
-    
-  </div>   
+      <template is="dom-if" if="[[loading]]">
+        Loading...
+      </template>
+      <template is="dom-if" if="[[!loading]]">
+        <simple-carousel infinite-loop="true" auto="true" transition-time="5000">
+          <carousel-slide>
+            <a href="/org/org2">
+              <img src="../../images/acss.jpg">
+            </a>
+          </carousel-slide>
+          <carousel-slide>
+            <a href="/org/org4">
+              <img src="../../images/ff.jpg">
+            </a>
+          </carousel-slide>
+          <carousel-slide>
+            <a href="/org/org5">
+              <img src="../../images/soma.png">
+            </a>
+          </carousel-slide>         
+        </simple-carousel> 
+        
+        <div class="card">
+          <div class="row">
+            <p class="text-heading">Active and Recruiting Organizations</p>
+            <a class="link" href="/org">
+              See more
+            </a>  
+            
+          </div>
+          <div class="row-center">
+            <org-summary orgid="org1"></org-summary>
+            <org-summary orgid="org4"></org-summary>  
+            <org-summary orgid="org2"></org-summary>  
+          </div>
+          
+        </div>
+        
+        <div class="card">
+          <div class="row">
+            <p class="text-heading">Recommended Events</p>
+            <a class="link" href="/event">
+              See more
+            </a>  
+            
+          </div>
+          <div class="row-center">
+            <event-summary eventid="event1"></event-summary>
+            <event-summary eventid="event2"></event-summary>  
+            <event-summary eventid="event3"></event-summary>  
+          </div>
+          
+        </div>  
+      </template>
+       
     
   </template>
 
@@ -110,7 +116,18 @@
     Polymer({
       is: 'home-page',
       properties: {
-        
+        loading: {
+          type: Boolean,
+          value: true
+        }
+      },
+
+      exitView: function() {
+        this.loading = true
+      },
+
+      enterView: function() {
+        this.loading = false;
       }
     });
   </script>
