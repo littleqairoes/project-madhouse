@@ -12,7 +12,8 @@
     "bundled": "polymer serve build/bundled -H $IP -p $PORT",
     "unbundled": "polymer serve build/unbundled -H $IP -p $PORT",
     "gulp": "$(npm bin)/gulp",
-    "watch": "$(npm bin)/gulp watch-all"
+    "watch": "$(npm bin)/gulp watch-all",
+    "sass": "$(npm bin)/gulp injectSass"
   },
   "author": "DS9",
   "license": "MIT",
