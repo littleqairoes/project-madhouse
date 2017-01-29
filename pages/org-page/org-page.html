@@ -17,16 +17,16 @@
       :host {
         display: block;
       }
-      
+
       .anchor-header {
         text-decoration: none;
         color: gray;
       }
-      
+
       .anchor-header:hover {
         color: black;
       }
-      
+
       .org-list {
         @apply(--layout-horizontal);
         @apply(--layout-wrap);
@@ -35,7 +35,7 @@
 
       .div-center {
         @apply(--layout-horizontal);
-        
+
       }
 
       .spacer {
@@ -57,10 +57,10 @@
       </template>
       <template is="dom-if" if="[[!orgId]]">
         <a href="#" id="add-org" on-tap="_addOrg">
-          <paper-button raised>Add Org</paper-button>  
+          <paper-button raised>Add Org</paper-button>
         </a>
       </template>
-      
+
       <template is="dom-if" if="{{checkEdit}}">
         <a href="/org/[[params.orgid]]/edit">
           <paper-button>Edit</paper-button>
@@ -72,18 +72,18 @@
           <div class="org-list">
             <template is="dom-repeat" items="[[orgArray]]">
               <org-summary orgid="[[item.$key]]" class="flex"></org-summary>
-            </template>  
+            </template>
           </div>
           <!--<div class="spacer"></div>-->
         <!--</div>-->
-        
+
       </template>
       <!--<div hidden$="{{checkView}}">
-        
+
       </div>-->
-      
+
     </div>
-    
+
     <template is="dom-if" if="[[edit]]">
       <org-form orgid="[[params.orgid]]"></org-form>
     </template>
@@ -92,17 +92,17 @@
   <script>
     Polymer({
       is: 'org-page',
-      
+
       behaviors: [
         PROJECTMADHOUSE.ProjectMadhouseOrgBehavior
       ],
-      
+
       properties: {
         orgArray: {
           type: Array,
           notify: true,
         },
-        
+
         orgId: {
           type: String,
           value: ''
@@ -112,45 +112,45 @@
           value: false,
           observer: 'showEdit',
         },
-        
+
         checkView: {
           type: Boolean,
           value: false,
           notify: true
         },
-        
+
         checkEdit: {
           type: Boolean,
           value: true,
           notify: true
         }
       },
-      
+
       observers: [
-        '_changeparamsOrgId(params.orgid)' 
-        
+        '_changeparamsOrgId(params.orgid)'
+
       ],
-      
+
       showEdit: function() {
       },
-      
+
       _changeparamsOrgId: function(id) {
         this.orgId = id || '';
         this.checkView = (this.orgId == '') ? false : true;
         this.checkEdit = (this.orgId == '' && !this.edit) ? false : true;
         console.log("change");
       },
-      
+
       sampleTap: function(e) {
         this.checkView = true;
       },
-      
+
       _addOrg: function(e) {
         var el = this.$$('#add-org')
-        
+
         //Generate a random unique key using firebase
         var key = firebase.database().ref(this.orgPath.org).push().key;
-        
+
         //Redirect to an edit page using the generated key
         el.setAttribute('href', '/org/'+key + '/edit');
       }

@@ -17,9 +17,12 @@
         display: block;
       }
       
-      a {
-        text-decoration: none;
+      .login-link:hover {
+        color: black;
+      }
+      .login-link {
         color: white;
+        text-decoration: none;
       }
     </style>
 
@@ -46,7 +49,8 @@
           on-tap="_toggleDrawer">
         </paper-icon-button>
 
-        <div main-title><a href="/">Project Madhouse</a></div>
+        <div main-title>Project Madhouse</div>
+        <a class="login-link" href="#">Log in</a>
 
         <!-- Navigation -->
         <project-madhouse-navigation navigation-list="[[navigationList]]" user="{{user}}" route="[[route]]"></project-madhouse-navigation>
