@@ -4,12 +4,24 @@
 app-header {
   background-color: $brand-primary;
   color: $gray-dark;
-  
+
   app-toolbar {
     height: $navigation-header-height;
-    
+
     span[main-title] {
       margin-left: $navigation-header-margin-left;
     }
-  }  
+  }
+}
+
+:host {
+  display: block;
+}
+
+.login-link:hover {
+  color: black;
+}
+.login-link {
+  color: white;
+  text-decoration: none;
 }

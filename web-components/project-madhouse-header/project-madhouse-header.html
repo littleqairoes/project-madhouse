@@ -14,17 +14,7 @@
 <dom-module id="project-madhouse-header">
   <template>
     <style is="custom-style" include="project-madhouse-header-style">
-      :host {
-        display: block;
-      }
-      
-      .login-link:hover {
-        color: black;
-      }
-      .login-link {
-        color: white;
-        text-decoration: none;
-      }
+
     </style>
     <firebase-auth
       id="auth"
@@ -34,10 +24,10 @@
 
     <!-- then the app-header -->
     <app-header
-        fixed$="[[fixed]]" 
-        sticky$="[[sticky]]" 
+        fixed$="[[fixed]]"
+        sticky$="[[sticky]]"
         condenses$="[[condenses]]"
-        disabled$="[[disabled]]" 
+        disabled$="[[disabled]]"
         effects="[[effects]]"
         effects-config="[[effectsConfig]]"
         reveals$="[[reveals]]"
@@ -47,7 +37,7 @@
         threshold-triggered="[[tresholdTriggered]]">
 
       <app-toolbar>
-        
+
         <!-- Drawer button -->
         <paper-icon-button
           icon="default:menu"
@@ -74,7 +64,7 @@
 
         <!-- Navigation -->
         <project-madhouse-navigation navigation-list="[[navigationList]]" user="{{user}}" route="[[route]]"></project-madhouse-navigation>
-        
+
       </app-toolbar>
     </app-header>
   </template>
@@ -120,14 +110,14 @@
         this.fire('toggle-drawer');
       },
 
-      _scrollProgressChanged: function(scrollProgress) {        
+      _scrollProgressChanged: function(scrollProgress) {
         var appHeader = this.$$('app-header');
         // var fadeBackgroundEffect = appHeader.createEffect('fade-background');
         var isCondensed = scrollProgress < this.scrollProgressThreshold;
         this.shadow = !isCondensed;
         // fadeBackgroundEffect.run(isCondensed ? 1 : 0);
       },
-      
+
       _scrollProgressChangedForDrawerToggleButton: function(scrollProgress) {
         if (scrollProgress > 0) {
           return 'drawer-toggle-button-scrolled';
