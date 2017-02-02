@@ -1,0 +1,69 @@
+<!-- Polymer dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../web-components/project-madhouse-user/project-madhouse-user-behavior.html">
+
+<!-- Style dependency -->
+<link rel="import" href="login-page-style.html">
+
+<dom-module id="login-page">
+  <template>
+    <style is="custom-style" include="login-page-style">
+      :host {
+        display: block;
+      }
+      
+      .anchor-header {
+        text-decoration: none;
+        color: gray;
+      }
+      
+      .anchor-header:hover {
+        color: black;
+      }
+      
+      .card {
+        text-align: center;
+      }
+      
+      
+    </style>
+    <firebase-auth
+      id="auth"
+      provider="google"
+      user="{{user}}">
+    </firebase-auth>
+
+    <div class="card">
+      <h1>Login page</h1>
+      <paper-button on-tap="login">Login</paper-button>
+    </div>
+    
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: 'login-page',
+      
+      behaviors: [
+        // PROJECTMADHOUSE.ProjectMadhouseOrgBehavior
+        PROJECTMADHOUSE.ProjectMadhouseUserBehavior
+      ],
+      
+      properties: {
+        user: {
+          type: Object,
+          notify: true
+        }
+      },
+      
+      observers: [
+        
+      ],
+      
+    });
+  </script>
+</dom-module>

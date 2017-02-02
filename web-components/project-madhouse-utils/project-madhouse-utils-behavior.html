@@ -67,7 +67,7 @@
         //   console.log(message);
         // }
 
-        PROJECTMADHOUSE.Elements.Template.$.toast.showMessage(message);
+        // PROJECTMADHOUSE.Elements.Template.$.toast.showMessage(message);
         
         if (err) {
           if (console.error) {
@@ -90,8 +90,9 @@
         console.log(err)
         
         var error = err.detail ? err.detail : err;
-        this._showMessage('Error: ' + error.detail ? error.detail.message : error.message, true);
+        console.log('Error: ' + error.detail ? error.detail.message : error.message, true);
       },
+      
       
       _textToUrl: function(text) {
         return encodeURI(text);

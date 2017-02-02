@@ -1,11 +1,12 @@
 <!-- Polymer dependencies -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../web-components/project-madhouse-icons/project-madhouse-icons.html">
 <link rel="import" href="../../web-components/project-madhouse-navigation/project-madhouse-navigation.html">
+<link rel="import" href="../../web-components/project-madhouse-user/project-madhouse-user-behavior.html">
 
 <!-- Style dependency -->
 <link rel="import" href="project-madhouse-header-style.html">
@@ -25,6 +26,11 @@
         text-decoration: none;
       }
     </style>
+    <firebase-auth
+      id="auth"
+      provider="google"
+      user="{{user}}">
+    </firebase-auth>
 
     <!-- then the app-header -->
     <app-header
@@ -50,7 +56,21 @@
         </paper-icon-button>
 
         <div main-title>Project Madhouse</div>
-        <a class="login-link" href="#">Log in</a>
+        <template is="dom-if" if="[[!user]]">
+          <a 
+            href="/login"
+            class="login-link">
+            Login
+          </a>
+        </template>
+        <template is="dom-if" if="[[user]]">
+          <a 
+            href="#"
+            class="login-link"
+            on-tap="logout">
+            Logout
+          </a>
+        </template>
 
         <!-- Navigation -->
         <project-madhouse-navigation navigation-list="[[navigationList]]" user="{{user}}" route="[[route]]"></project-madhouse-navigation>
@@ -62,6 +82,9 @@
   <script>
     Polymer({
       is: 'project-madhouse-header',
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseUserBehavior
+      ],
 
       properties: {
         navigationList: {

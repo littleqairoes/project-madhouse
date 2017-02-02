@@ -1,0 +1,124 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../../web-components/project-madhouse-utils/project-madhouse-utils-behavior.html">
+
+<script>
+  (function(){
+    'use strict';
+    /** @polymerBehavior PROJECTMADHOUSE.ProjectMadhouseOrgBehavior */
+    PROJECTMADHOUSE.ProjectMadhouseUserBehaviorImpl = {
+
+      properties: {
+        user: {
+          type: Object,
+          notify: true,
+          value: function() { return null; },
+        },
+        signedIn: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        roles: {
+          type: Object,
+          notify: true,
+          value: function() { return {}; }
+        },
+        owner: {
+          type: Object,
+          value: function() { return null; }
+        },
+        userPath: {
+          type: Object,
+          readOnly: true,
+          value: function() { return this._userPath; }
+        },
+        userGroup: {
+          type: String,
+          readOnly: true,
+          value: function() { return this._userGroup; }
+        },
+        profile: {
+          type: Object
+        }
+      },
+
+      get _userGroup() {
+        return 'userGroup';
+      },
+
+      get _userPath() {        
+        return {
+          profiles: this._version + '/' + this._userGroup + '/profiles',
+        };
+      },
+      
+      login: function(e) {
+        if (this.$.auth && this.$.auth.signInWithPopup) {
+          this.$.auth.provider = e.target.id || "google";
+          // console.log(e.target.id)
+          this.$.auth.signInWithPopup().then(this._loginSuccess.bind(this)).catch(this._catchError.bind(this));
+        } else {
+          this._catchError(new Error('no auth component found'));
+        }
+      },
+      
+      _loginSuccess: function(result) {
+        var ref = this.userPath.profiles + '/' +  result.user.uid;
+        this._showMessage('Welcome ' + result.user.displayName + '!');
+      
+        if (firebase) {
+          firebase.database().ref(ref).once('value', this._checkProfile.bind(this, result.user, ref));
+        } else {
+          throw new Error('No firebase app connected');
+        }
+      },
+      
+      
+      _checkProfile: function(user, ref, profile) {
+        if (!profile.val()) {
+          var obj = {
+            displayName: user.displayName,
+            email: user.email,
+          };
+          if (user.displayName) {
+            var array = user.displayName.trim().split(' ');
+            obj.lastName = array.pop();
+            obj.firstName = array.join(' ');
+          }
+          var updates = {};
+          updates[ref] = obj;
+          
+          return firebase.database().ref().update(updates).then(function(){
+          });
+        } else {
+        }
+      },
+      
+      
+      logout: function() {
+        if (this.user) {
+          if (this.$.auth && this.$.auth.signOut) {
+            this.$.auth.signOut().then(this._logoutSuccess.bind(this)).catch(this._catchError.bind(this));
+          } else {
+            this._catchError(new Error('no auth component found'));
+          }
+        } else {
+          console.log("You are already logged out.");
+        }
+      },
+      
+      _logoutSuccess: function(result) {
+        console.log("Successfully logged out.");
+      },
+
+      
+
+      
+    };
+    PROJECTMADHOUSE.ProjectMadhouseUserBehavior = [
+      PROJECTMADHOUSE.ProjectMadhouseUtilsBehavior,
+      PROJECTMADHOUSE.ProjectMadhouseUserBehaviorImpl
+    ];
+  })();
+</script>
