@@ -69,6 +69,8 @@
       
         if (firebase) {
           firebase.database().ref(ref).once('value', this._checkProfile.bind(this, result.user, ref));
+          console.log(result.user.uid);
+          window.location.href="/member/" + result.user.uid;
         } else {
           throw new Error('No firebase app connected');
         }
