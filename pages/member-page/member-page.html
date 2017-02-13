@@ -58,7 +58,7 @@
       <paper-fab-speed-dial>      
         <paper-fab icon="create"></paper-fab>
         <div class="dropdown-content">
-            <paper-fab mini icon="editor:insert-photo"></paper-fab>
+            <paper-fab mini icon="editor:insert-photo" on-tap="_uploadFile"></paper-fab>
             <paper-fab mini icon="add" on-tap="_addOrg"></paper-fab>
         </div>
     </paper-fab-speed-dial>
@@ -122,6 +122,10 @@
       
       sampleTap: function(e) {
         this.checkView = true;
+      },
+      
+      _uploadFile: function() {
+        
       },
       
       _addOrg: function(e) {
