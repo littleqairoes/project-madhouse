@@ -9,6 +9,10 @@
 <link rel="import" href="../web-components/project-madhouse-header/project-madhouse-header.html">
 <link rel="import" href="../web-components/project-madhouse-drawer/project-madhouse-drawer.html">
 
+<!--Imported behaviors-->
+<link rel="import" href="../web-components/project-madhouse-utils/project-madhouse-utils-behavior.html">
+
+
 <!--
 `<project-madhouse-app-shell>` is the main core element called in the index.html that
 renders the pages.
@@ -76,9 +80,9 @@ Wham! It's all awesome now!
         <org-page route="/org/:orgid"></org-page>
         <org-page route="/org/:orgid/edit" edit auth="[[user]]"></org-page>
         
-        <member-page route="/member"></member-page>
-        <member-page route="/member/:memberid"></member-page>
-        <member-page route="/member/:memberid/edit" edit auth="[[user]]"></member-page>
+        <member-page route="/member" user="[[user]]"></member-page>
+        <member-page route="/member/:memberid" user="[[user]]"></member-page>
+        <member-page route="/member/:memberid/edit" edit auth="[[_forceZero(user)]]" user="[[user]]"></member-page>
         
         <event-page route="/event"></event-page>
         <event-page route="/event/:eventid"></event-page>
@@ -145,6 +149,10 @@ Wham! It's all awesome now!
           }
         },
       },
+      
+      behaviors: [
+        PROJECTMADHOUSE.ProjectMadhouseUtilsBehavior
+      ],
 
       ready: function() {
 

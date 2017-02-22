@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/polymer-bg/polymer-bg.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../../bower_components/paper-fab-speed-dial/paper-fab-speed-dial.html">
@@ -33,32 +34,39 @@
       data="{{memberArray}}">
     </firebase-query>
 
-    <div class="card">
-      <h1><a href="/member">Member Page</a> #[[params.memberid]]</h1>
-      <template is="dom-if" if="[[memId]]">
-        <member-view memberid="[[memId]]"></member-view>
-      </template>
       
-      <template is="dom-if" if="{{checkEdit}}">
-        <a href="/member/[[params.memberid]]/edit">
-          <paper-button>Edit</paper-button>
-        </a>
-      </template>
-      <div hidden$="{{checkView}}">
-        <template is="dom-repeat" items="[[memberArray]]">
-          <member-summary memberid="[[item.$key]]"></member-summary>
-        </template>  
-      </div>
+    <div class="card" hidden$="{{checkView}}">
+      <template is="dom-repeat" items="[[memberArray]]">
+        <member-summary memberid="[[item.$key]]"></member-summary>
+      </template>  
     </div>
+    <template is="dom-if" if="[[memId]]">
+      <member-view memberid="[[memId]]"></member-view>
+    </template>
+    
+    <template is="dom-if" if="{{checkEdit}}">
+      <a href="/member/[[params.memberid]]/edit">
+        <paper-button>Edit</paper-button>
+      </a>
+    </template>
     
     <template is="dom-if" if="[[edit]]">
     <member-form memberid="[[params.memberid]]"></member-form>
     </template>
+    <!--<img id="previewImage" src="" height="200" alt="Image preview...">-->
+    <input type="file" id="file" style="display:none" on-change="_uploadFile" />
+    
+    <polymer-bg bg-background="https://cdn.pixabay.com/photo/2017/02/13/22/27/milk-splash-2064088_960_720.jpg" ideal-width="300" bg-orientation="vertical">
+      <img src="https://cdn.pixabay.com/photo/2017/02/13/22/27/milk-splash-2064088_960_720.jpg"/>
+
+    </polymer-bg>
+    
+    
     <div class="fab">
       <paper-fab-speed-dial>      
         <paper-fab icon="create"></paper-fab>
         <div class="dropdown-content">
-            <paper-fab mini icon="editor:insert-photo" on-tap="_uploadFile"></paper-fab>
+            <paper-fab mini icon="editor:insert-photo" on-tap="_openFileDialog"></paper-fab>
             <paper-fab mini icon="add" on-tap="_addOrg"></paper-fab>
         </div>
     </paper-fab-speed-dial>
@@ -105,16 +113,25 @@
         }
       },
       
+      ready: function() {
+      },
+      
       observers: [
-        '_changeparamsMemberId(params.memberid)' 
+        '_changeparamsMemberId(params.memberid)', 
+        '_check(user.uid)'
         
       ],
+      
+      _check: function(userId) {
+        console.log("User id is " + userId);
+      },
       
       checkArray: function() {
         console.log(this.memberArray);
       },
       
       _changeparamsMemberId: function(id) {
+        console.log(id);
         this.memId = id || '';
         this.checkView = (this.memId == '') ? false : true;
         this.checkEdit = (this.memId == '' && !this.edit) ? false : true;
@@ -124,8 +141,43 @@
         this.checkView = true;
       },
       
-      _uploadFile: function() {
+      _uploadFile: function(e) {
+        var storageRef = firebase.storage().ref();
+        console.log("uploaded a file in the cache");
+        console.log(this.$.file.files[0]);
+        var file = this.$.file.files[0];
+        var uploadTask = firebase.storage().ref("images/" + file.name).put(file);
+
+        uploadTask.on('state_changed', function(snapshot){
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+              console.log('Upload is paused');
+              break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+              console.log('Upload is running');
+              break;
+          }
+        }, function(error) {
+          // Handle unsuccessful uploads
+        }, function() {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          var downloadURL = uploadTask.snapshot.downloadURL;
+          console.log("Download is successful. URL is " + downloadURL);
+          // this.$.previewImage.src = downloadURL;
+          this.$$("#previewImage").src = downloadURL;
+        }.bind(this));
         
+        
+        
+      },
+      
+      _openFileDialog: function() {
+        
+        //Open the file dialog
+        this.$.file.click();
       },
       
       _addOrg: function(e) {

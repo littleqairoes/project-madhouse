@@ -2,6 +2,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
 
 <!-- Style dependency -->
@@ -18,16 +20,51 @@
       path="[[memberPath.member]]/[[memberid]]"
       data="{{memberDetail}}"
     >
-    <h1>[[memberDetail.Name]]</h1>
-    Mantra: [[memberDetail.Mantra]]
-    <br>
-    Course: [[memberDetail.Course]]
-    <br>
-    Contact: [[memberDetail.Contact]]
-    <br>
-    Interests: [[memberDetail.Interests]]
-    <br>
-    Last Updated: [[memberDetail.lastUpdated]]
+    <!--<h1>[[memberDetail.Name]]</h1>-->
+    <!--Mantra: [[memberDetail.Mantra]]-->
+    <!--<br>-->
+    <!--Course: [[memberDetail.Course]]-->
+    <!--<br>-->
+    <!--Contact: [[memberDetail.Contact]]-->
+    <!--<br>-->
+    <!--Interests: [[memberDetail.Interests]]-->
+    <!--<br>-->
+    <!--Last Updated: [[memberDetail.lastUpdated]]-->
+    <div class="profile-page">
+    
+    <div class="wrapper">
+		<div class="header header-filter" style="background-image: url('../../images/city.jpg');"></div>
+
+		<div class="main main-raised">
+			<div class="profile-content">
+	            <div class="container">
+	                <div class="row">
+	                    <div class="profile">
+	                        <div class="avatar">
+	                            <img src="../../images/default-avatar.png" alt="Circle Image" class="img-circle img-responsive img-raised">
+	                        </div>
+	                        <div class="name">
+	                            <h3 class="title">[[memberDetail.Name]]</h3>
+								<h6>Member #[[memberid]]</h6>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="description text-center">
+                        <p>[[memberDetail.Mantra]] </p>
+	                </div>
+
+					<div class="row">
+						<div class="col-md-6 col-md-offset-3">
+							<!-- End Profile Tabs -->
+						</div>
+	                </div>
+
+	            </div>
+	        </div>
+		</div>
+
+    </div>
+    </div>
     
 
   </template>
