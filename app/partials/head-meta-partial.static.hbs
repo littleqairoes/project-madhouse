@@ -1,0 +1,45 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, minimum-scale = 1.0, initial-scale = 1.0, maximum-scale = 1.0, user-scalable=no">
+
+<title>{{app.name}}</title>
+<meta name="description" content="{{app.description}}" />
+
+<meta property="og:title" content="{{app.name}}" />
+<meta property="og:type" content="{{meta.ogType}}" />
+<meta property="og:image" content="{{meta.image}}" />
+<meta property="og:description" content="{{app.description}}" />
+
+<meta name="twitter:card" content="{{meta.twitterCard}}" />
+<meta name="twitter:site" content="@{{meta.twitterHandle}}" />
+<meta name="twitter:creator" content="@{{meta.twitterHandle}}" />
+<meta name="twitter:title" content="{{app.name}}" />
+<meta name="twitter:description" content="{{app.description}}" />
+<meta name="twitter:image" content="{{meta.image}}" />
+
+<link rel="icon" href="/images/favicon.ico">
+
+<!-- See https://goo.gl/OOhYW5 -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- See https://goo.gl/qRE0vM -->
+<meta name="theme-color" content="{{app.themeColor}}" />
+
+<!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
+<meta name="mobile-web-app-capable" content="{{meta.mobileWebAppCapable}}">
+<meta name="application-name" content="{{app.name}}" />
+
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="{{meta.appleMobleWebAppCapable}}">
+<meta name="apple-mobile-web-app-status-bar-style" content="{{meta.appleMobileWebAppStatusBarStyle}}">
+<meta name="apple-mobile-web-app-title" content="{{app.name}}" />
+
+<!-- Homescreen icons -->
+{{#each manifest.icons}}
+  <link rel="apple-touch-icon" sizes="{{sizes}}" href="{{src}}">
+{{/each}}
+
+<!-- Tile icon for Windows 8 (144x144 + tile color) -->
+<meta name="msapplication-TileImage" content="{{meta.msapplicationTileImage}}">
+
+<meta name="msapplication-TileColor" content="{{app.themeColor}}" />
+<meta name="msapplication-tap-highlight" content="{{meta.msapplicationTapHighlight}}">

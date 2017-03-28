@@ -1,0 +1,69 @@
+<script>
+  (function(){
+    window.{{app.shortName}} = window.{{app.shortName}} || {};
+    window.{{app.shortName}}.build = "{{app.build}}";
+
+    // Setup Polymer options
+    // Based on https://youtu.be/Rd0plknSPYU?t=19m58s
+    // Making Chromsestatus.com a Lightning-fast PWA (Polymer Summit 2016)
+    window.Polymer = {
+      dom: 'shadow', // Use native Shadow DOM (if available)
+      lazyRegister: 'max' // Delay Polymer startup work until instance-time,
+    };
+
+    window.loadRaven = function() {
+      Raven.config("{{app.ravenConfig}}", {
+        autoBreadcrumbs: {
+          console: false
+        }
+      }).install();
+
+    }
+
+    window.onerror = function (message, file, lineNumber, columnNumber, error) {
+    //var hello = function() {
+      // We don't want to trigger any errors inside window.onerror, so wrap in a try/catch.
+      try {
+        // Some browsers don't support error param yet.
+        if (error !== undefined && error !== null) {
+          message = error.stack;
+        }
+        if (window.ga) {
+          ga('send', 'event', 'error', file + ':' + lineNumber, message);
+        }
+        if (window.Raven && error) {
+          Raven.captureException(error);
+          // if (window.UXPH.version !== 'beta' && window.UXPH.version !== 'alpha') {
+          //  Raven.showReportDialog();
+          // }
+        } else {
+          // console.log(message);
+          console.error(error);
+        }
+      } catch (e) {
+        console.error(e);
+        // no-op
+      }
+    };
+
+    window.initFontLoader = function() {
+      if (window.FontFaceObserver) {
+        console.log('font-face-observer loaded');
+        var font = new FontFaceObserver('Open Sans');
+        font.load().then(function() {
+          document.body.className += 'font-loaded';
+        })
+      }
+    }
+
+    // check if Promise is existing
+    if (!window.Promise) {
+      var promiseLink = document.createElement('script');
+      promiseLink.setAttribute('src', "/bower_components/promise-polyfill/promise.min.js");
+      document.head.appendChild(promiseLink);
+    }
+  })();
+</script>
+<script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+<script src="https://cdn.ravenjs.com/3.8.1/raven.min.js" async onload="window.loadRaven()"></script>
+<link rel="import" href="/project_components/project-core/project-core.html" async>

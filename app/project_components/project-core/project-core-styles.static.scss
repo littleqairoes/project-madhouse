@@ -1,0 +1,11 @@
+---
+name: project-core
+_options:
+  layout: app/layouts/project-components-style-layout.static.hbs
+---
+//
+.p {
+  .span {
+    color: red
+  }
+}

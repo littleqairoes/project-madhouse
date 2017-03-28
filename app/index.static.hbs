@@ -1,0 +1,15 @@
+---
+_options:
+  layout: app/layouts/page-layout.static.hbs
+  partials:
+    - app/partials/head-meta-partial.static.hbs
+    - app/partials/head-script-partial.static.hbs
+---
+  <head>
+    {{>head-meta-partial}}
+    {{>head-script-partial}}
+  </head>
+
+  <body>
+    <project-core></project-core>
+  </body>
