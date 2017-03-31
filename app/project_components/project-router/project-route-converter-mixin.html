@@ -1,0 +1,85 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<script>
+  (function() {
+    const __loadedImports = {};
+    window.Mixins = window.Mixins || {};
+    window.Mixins.RouteConverter = window.Mixins.RouteConverter || function(superClass) {
+      return class extends superClass {
+        constructor() {
+          super();
+          this.linkPaths('route.__queryParams', 'queryParams');
+          this.linkPaths('queryParams', 'route.__queryParams');
+        }
+
+        static get properties() {
+          return {
+            route: {
+              type: Object,
+              notify: true
+            },
+
+            queryParams: {
+              type: Object,
+              notify: true
+            },
+
+            path: {
+              type: String,
+              notify: true,
+            }
+          };
+        }
+
+        static get observers() {
+          return [
+            '_locationChanged(path, queryParams)',
+            '_routeChanged(route.prefix, route.path)',
+            '_routeQueryParamsChanged(route.__queryParams)'
+          ]
+        }
+
+        /**
+       * Handler called when the path or queryParams change.
+       */
+        _locationChanged() {
+          if (this.route &&
+              this.route.path === this.path &&
+              this.queryParams === this.route.__queryParams) {
+            return;
+          }
+          this.route = {
+            prefix: '',
+            path: this.path,
+            __queryParams: this.queryParams
+          };
+        }
+
+        /**
+         * Handler called when the route prefix and route path change.
+         */
+        _routeChanged() {
+          if (!this.route) {
+            return;
+          }
+          this.path = this.route.prefix + this.route.path;
+        }
+
+        /**
+         * Handler called when the route queryParams change.
+         *
+         * @param  {Object} queryParams A set of key/value pairs that are
+         * universally accessible to branches of the route tree.
+         */
+        _routeQueryParamsChanged(queryParams) {
+          if (!this.route) {
+            return;
+          }
+          this.queryParams = queryParams;
+        }
+      }
+    }
+  })();
+
+
+</script>

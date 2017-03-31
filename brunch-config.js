@@ -18,6 +18,7 @@ exports.plugins = {
   copycat: {
     "bower_components": ["app/bower_components"],
     "project_components": ["app/project_components"],
+    "page_components": ["app/page_components"],
     verbose: false,
     onlyChanged: true
   },
@@ -38,7 +39,7 @@ exports.plugins = {
           require('./additional_plugins/json-brunch-static')(),
           require('./additional_plugins/js-brunch-static')()
         ],
-        defaultContext: config[config.builds.beta],
+        defaultContext: config[config.builds.dev],
         handlebars: {
           enableProcessor: true,
           helpers: {

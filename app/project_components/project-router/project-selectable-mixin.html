@@ -1,0 +1,426 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/case-map.html">
+<link rel="import" href="project-selection.html">
+
+<script>
+  (function() {
+    window.Mixins = window.Mixins || {};
+    window.Mixins.Selectable = window.Mixins.Selectable || function(superClass) {
+      return class extends superClass {
+        constructor() {
+          super();
+          this._bindFilterItem = this._filterItem.bind(this);
+          this.__boundActivateHandler = this._activateHandler.bind(this);
+          this._selection = new window.ProjectElements.ProjectSelection(this._applySelection.bind(this));
+          this._observer = null;
+        }
+
+        connectedCallback() {
+          super.connectedCallback();
+          this._observer = new Polymer.FlattenedNodesObserver(this, (info) => {
+            this._updateItems();
+            if (this._shouldUpdateSelection) {
+              this._updateSelected();
+            }
+            this.dispatchEvent(new CustomEvent('iron-items-changed'), {
+              detail: info,
+              bubbles: false,
+              cancelable: false
+            })
+          })
+
+          this._updateItems();
+          if (!this._shouldUpdateSelection) {
+            this._updateSelected();
+          }
+          this.addEventListener(this.activateEvent, this.__boundActivateHandler);
+
+        }
+
+        disconnectedCallback() {
+          super.disconnectedCallback();
+          if (this._observer) this._observer.disconnect();
+          this.removeEventListener(this.activateEvent, this.__boundActivateHandler);
+        }
+
+        static get properties() {
+          return {
+            /**
+             * If you want to use an attribute value or property of an element for
+             * `selected` instead of the index, set this to the name of the attribute
+             * or property. Hyphenated values are converted to camel case when used to
+             * look up the property of a selectable element. Camel cased values are
+             * *not* converted to hyphenated values for attribute lookup. It's
+             * recommended that you provide the hyphenated form of the name so that
+             * selection works in both cases. (Use `attr-or-property-name` instead of
+             * `attrOrPropertyName`.)
+             */
+            attrForSelected: {
+              type: String,
+              value: null
+            },
+            /**
+             * Gets or sets the selected element. The default is to use the index of the item.
+             * @type {string|number}
+             */
+            selected: {
+              type: String,
+              notify: true
+            },
+            /**
+             * Returns the currently selected item.
+             *
+             * @type {?Object}
+             */
+            selectedItem: {
+              type: Object,
+              readOnly: true,
+              notify: true
+            },
+            /**
+             * The event that fires from items when they are selected. Selectable
+             * will listen for this event from items and update the selection state.
+             * Set to empty string to listen to no events.
+             */
+            activateEvent: {
+              type: String,
+              value: 'tap',
+              observer: '_activateEventChanged'
+            },
+            /**
+             * This is a CSS selector string.  If this is set, only items that match the CSS selector
+             * are selectable.
+             */
+            selectable: String,
+            /**
+             * The class to set on elements when selected.
+             */
+            selectedClass: {
+              type: String,
+              value: 'iron-selected'
+            },
+            /**
+             * The attribute to set on elements when selected.
+             */
+            selectedAttribute: {
+              type: String,
+              value: null
+            },
+            /**
+             * Default fallback if the selection based on selected with `attrForSelected`
+             * is not found.
+             */
+            fallbackSelection: {
+              type: String,
+              value: null
+            },
+            /**
+             * The list of items from which a selection can be made.
+             */
+            items: {
+              type: Array,
+              readOnly: true,
+              notify: true,
+              value: function() {
+                return [];
+              }
+            },
+            /**
+             * The set of excluded elements where the key is the `localName`
+             * of the element that will be ignored from the item list.
+             *
+             * @default {template: 1}
+             */
+            _excludedLocalNames: {
+              type: Object,
+              value: function() {
+                return {
+                  'template': 1
+                };
+              }
+            }
+          };
+        }
+
+        static get observers() {
+          return [
+            '_updateAttrForSelected(attrForSelected)',
+            '_updateSelected(selected)',
+            '_checkFallback(fallbackSelection)'
+          ]
+        }
+
+        // Observer functions
+        //---------------------------------------------------------------
+
+        /**
+         * Returns the index of the given item.
+         *
+         * @method indexOf
+         * @param {Object} item
+         * @returns Returns the index of the item
+         */
+        indexOf(item) {
+          return this.items.indexOf(item);
+        }
+
+        /**
+         * Selects the given value.
+         *
+         * @method select
+         * @param {string|number} value the value to select.
+         */
+        select(value) {
+          this.selected = value;
+        }
+
+        /**
+         * Selects the previous item.
+         *
+         * @method selectPrevious
+         */
+        selectPrevious() {
+          var length = this.items.length;
+          var index = (Number(this._valueToIndex(this.selected)) - 1 + length) % length;
+          this.selected = this._indexToValue(index);
+        }
+
+        /**
+         * Selects the next item.
+         *
+         * @method selectNext
+         */
+        selectNext() {
+          var index = (Number(this._valueToIndex(this.selected)) + 1) % this.items.length;
+          this.selected = this._indexToValue(index);
+        }
+
+        /**
+         * Selects the item at the given index.
+         *
+         * @method selectIndex
+         */
+        selectIndex(index) {
+          this.select(this._indexToValue(index));
+        }
+
+        /**
+         * Force a synchronous update of the `items` property.
+         *
+         * NOTE: Consider listening for the `iron-items-changed` event to respond to
+         * updates to the set of selectable items after updates to the DOM list and
+         * selection state have been made.
+         *
+         * WARNING: If you are using this method, you should probably consider an
+         * alternate approach. Synchronously querying for items is potentially
+         * slow for many use cases. The `items` property will update asynchronously
+         * on its own to reflect selectable items in the DOM.
+         */
+        forceSynchronousItemUpdate() {
+          this._updateItems();
+        }
+
+        get _shouldUpdateSelection() {
+          return this.selected != null;
+        }
+
+        _checkFallback() {
+          if (this._shouldUpdateSelection) {
+            this._updateSelected();
+          }
+        }
+
+        _activateEventChanged(eventName, old) {
+          // this._removeListener(old);
+          this.removeEventListener(old, this.__boundActivateHandler)
+          this.addEventListener(eventName, this.__boundActivateHandler);
+          // this._addListener(eventName);
+        }
+
+        _queryDistributedElements(selector) {
+          const p = Element.prototype;
+          const normalizedMatchesSelector = p.matches || p.matchesSelector ||
+            p.mozMatchesSelector || p.msMatchesSelector ||
+            p.oMatchesSelector || p.webkitMatchesSelector;
+          /**
+           * Cross-platform `element.matches` shim.
+           *
+           * @function matchesSelector
+           * @param {Node} node Node to check selector against
+           * @param {string} selector Selector to match
+           * @return {boolean} True if node matched selector
+           */
+          const matchesSelector = function(node, selector) {
+            return normalizedMatchesSelector.call(node, selector);
+          }
+
+          var c$ = Polymer.FlattenedNodesObserver.getFlattenedNodes(this);
+          var list = [];
+          for (let i=0, l=c$.length, c; (i<l) && (c=c$[i]); i++) {
+            if ((c.nodeType === Node.ELEMENT_NODE) &&
+                matchesSelector(c, selector)) {
+              list.push(c);
+            }
+          }
+          return list
+        }
+
+        _updateItems() {
+          // Legacy
+          // Polymer.dom(this).queryDistributedElements(this.selectable || '*');
+
+          var nodes = this._queryDistributedElements(this.selectable || '*');
+          nodes = Array.prototype.filter.call(nodes, this._bindFilterItem);
+          this._setItems(nodes);
+        }
+
+        _updateAttrForSelected() {
+          if (this._shouldUpdateSelection) {
+            this.selected = this._indexToValue(this.indexOf(this.selectedItem));
+          }
+        }
+
+        _updateSelected() {
+          this._selectSelected(this.selected);
+        }
+
+        _selectSelected(selected) {
+          this._selection.select(this._valueToItem(this.selected));
+          // Check for items, since this array is populated only when attached
+          // Since Number(0) is falsy, explicitly check for undefined
+          if (this.fallbackSelection && this.items.length && (this._selection.get() === undefined)) {
+            this.selected = this.fallbackSelection;
+          }
+        }
+
+        _filterItem(node) {
+          return !this._excludedLocalNames[node.localName];
+        }
+
+        _valueToItem(value) {
+          return (value == null) ? null : this.items[this._valueToIndex(value)];
+        }
+
+        _valueToIndex(value) {
+          if (this.attrForSelected) {
+            for (var i = 0, item; item = this.items[i]; i++) {
+              if (this._valueForItem(item) == value) {
+                return i;
+              }
+            }
+          } else {
+            return Number(value);
+          }
+        }
+
+        _indexToValue(index) {
+          if (this.attrForSelected) {
+            var item = this.items[index];
+            if (item) {
+              return this._valueForItem(item);
+            }
+          } else {
+            return index;
+          }
+        }
+
+
+
+        _valueForItem(item) {
+          var propValue = item[Polymer.CaseMap.dashToCamelCase(this.attrForSelected)];
+          return propValue != undefined ? propValue : item.getAttribute(this.attrForSelected);
+        }
+
+        _applySelection(item, isSelected) {
+          if (this.selectedClass) {
+            this.toggleClass(this.selectedClass, isSelected, item);
+          }
+          if (this.selectedAttribute) {
+            this.toggleAttribute(this.selectedAttribute, isSelected, item);
+          }
+          this._selectionChange();
+          this.dispatchEvent(new CustomEvent(`iron-${(isSelected ? 'select' : 'deselect')}`, {
+            detail: {item}
+          }))
+        }
+
+        _selectionChange() {
+          this._setSelectedItem(this._selection.get());
+        }
+
+        _activateHandler(e) {
+          var t = e.target;
+          var items = this.items;
+          while (t && t != this) {
+            var i = items.indexOf(t);
+            if (i >= 0) {
+              var value = this._indexToValue(i);
+              this._itemActivate(value, t);
+              return;
+            }
+            t = t.parentNode;
+          }
+        }
+
+        _itemActivate(selected, item) {
+          var event = new CustomEvent('iron-activate', {
+            detail: {
+              selected,
+              item
+            },
+            cancelable: true
+          })
+          this.dispatchEvent(event);
+
+          if (event.defaultPrevented) {
+            this.select(selected);
+          }
+        }
+
+        /**
+         * Toggles a CSS class on or off.
+         *
+         * @method toggleClass
+         * @param {String} name CSS class name
+         * @param {boolean=} bool Boolean to force the class on or off.
+         *    When unspecified, the state of the class will be reversed.
+         * @param {HTMLElement=} node Node to target.  Defaults to `this`.
+         */
+        toggleClass(name, bool, node) {
+          node = node || this;
+          if (arguments.length == 1) {
+            bool = !node.classList.contains(name);
+          }
+          if (bool) {
+            node.classList.add(name);
+          } else {
+            node.classList.remove(name);
+          }
+        }
+
+        /**
+         * Toggles an HTML attribute on or off.
+         *
+         * @method toggleAttribute
+         * @param {String} name HTML attribute name
+         * @param {boolean=} bool Boolean to force the attribute on or off.
+         *    When unspecified, the state of the attribute will be reversed.
+         * @param {HTMLElement=} node Node to target.  Defaults to `this`.
+         */
+        toggleAttribute(name, bool, node) {
+          node = node || this;
+          if (arguments.length == 1) {
+            bool = !node.hasAttribute(name);
+          }
+          if (bool) {
+            node.setAttribute(name, '');
+          } else {
+            node.removeAttribute(name);
+          }
+        }
+      }
+    }
+  })();
+
+
+</script>

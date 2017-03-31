@@ -1,0 +1,62 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<script>
+  (function() {
+    const __loadedImports = {};
+    window.Mixins = window.Mixins || {};
+    window.Mixins.LazyImport = window.Mixins.LazyImport || function(superClass) {
+      return class extends superClass {
+        constructor() {
+          super();
+        }
+
+        importLazyGroup(group, fromElement) {
+          const fromElementString = !fromElement ? this.localName : fromElement;
+          const el = fromElement instanceof HTMLElement ? fromElement : Polymer.DomModule.import(fromElementString);
+          var groupAttribute;
+          if (group) {
+            groupAttribute = `[group=${group}]`;
+          } else {
+            groupAttribute = 'not([group])';
+          }
+          const query = `link${groupAttribute}[rel='lazy-import'][href]:not([href=""])`
+          const imports = fromElement.querySelectorAll(query);
+          const promises = [];
+          for (var i = 0; i < imports.length; i++) {
+            promises.push(new Promise((resolve, reject) => {
+              var href = imports[i].getAttribute('href');
+              const onLoad = function() {
+                resolve({loaded: href});
+              };
+              const onFailure = function() {
+                resolve({failed: href});
+              };
+              var resolved = this.resolveUrl(href);
+              if (!__loadedImports[resolved]) {
+                __loadedImports[resolved] = true;
+                // console.log(resolved)
+                // console.log(Polymer.importHref)
+                Polymer.importHref(resolved, onLoad, onFailure, true);
+              } else {
+                resolve({alreadyLoaded: true});
+              }
+            }));
+          }
+          return Promise.all(promises).then(function(importRequests) {
+            return importRequests.reduce(function(requests, nextRequest) {
+              if (nextRequest.loaded) {
+                requests.loaded.push(nextRequest.loaded);
+              }
+              if (nextRequest.failed) {
+                requests.failed.push(nextRequest.failed);
+              }
+              return requests;
+            }, {loaded: [], failed: []});
+          });
+        }
+      }
+    }
+  })();
+
+
+</script>

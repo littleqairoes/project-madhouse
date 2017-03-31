@@ -1,0 +1,61 @@
+<!-- Bower Components Dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/async.html">
+
+<!-- Project Components Dependencies -->
+<link rel="import" href="project-resizable-mixin.html">
+<link rel="import" href="project-selectable-mixin.html">
+
+<!-- Element Definition -->
+<dom-module id="project-pages">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      :host > ::content > :not(.iron-selected) {
+        display: none !important;
+      }
+    </style>
+
+    <slot></slot>
+  </template>
+
+  <script>
+    (function() {
+      class ProjectPages extends Mixins.Resizable(Mixins.Selectable(Polymer.Element)) {
+        static get is() { return 'project-pages'; }
+
+        constructor() {
+          super();
+        }
+
+        static get properties() {
+          return {
+            // as the selected page is the only one visible, activateEvent
+            // is both non-sensical and problematic; e.g. in cases where a user
+            // handler attempts to change the page and the activateEvent
+            // handler immediately changes it back
+            activateEvent: {
+              type: String,
+              value: null
+            }
+          };
+        }
+
+        static get observers() {
+          return [
+            '_selectedPageChanged(selected)'
+          ]
+        }
+
+        _selectedPageChanged(selected, old) {
+          setTimeout(this.notifyResize);
+          // Polymer.async(this.notifyResize);
+        }
+      }
+
+      window.customElements.define(ProjectPages.is, ProjectPages);
+    })();
+  </script>
+</dom-module>

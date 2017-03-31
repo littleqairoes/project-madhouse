@@ -1,8 +1,45 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<!-- Bower Components Dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/render-status.html">
+
+<!-- Project Components Dependencies -->
+<link rel="import" href="../../project_components/lazy-import/lazy-import-mixin.html">
+<link rel="import" href="../../project_components/project-router/project-router-mixin.html">
+<link rel="import" href="../../project_components/project-router/project-location.html">
+<link rel="import" href="../../project_components/project-router/project-pages.html">
+
+<!-- Style -->
 <link rel="import" href="project-core-styles.html">
 
+<!-- Element Definition -->
 <dom-module id="project-core">
   <template>
-    {{hello}}
+    <project-location route="{{_route}}" path="{{_path}}" query-params="{{queryParams}}"></project-location>
+
+    <project-pages
+        attr-for-selected="route"
+        fallback-selection="not-found"
+        role="main"
+        id="viewport">
+      <slot id="pages"></slot>
+    </project-pages>
   </template>
+
+  <script>
+    (function() {
+      class ProjectCore extends Mixins.Router(Mixins.LazyImport(Polymer.Element)) {
+        static get is() { return 'project-core'; }
+
+        constructor() {
+          super();
+        }
+
+        connectedCallback() {
+          super.connectedCallback();
+        }
+      }
+
+      window.customElements.define(ProjectCore.is, ProjectCore);
+    })();
+  </script>
 </dom-module>

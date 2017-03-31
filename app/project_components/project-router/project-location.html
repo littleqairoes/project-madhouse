@@ -1,0 +1,99 @@
+<!-- Bower Components Dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<!-- Project Components Dependencies -->
+<link rel="import" href="project-route-converter-mixin.html">
+<link rel="import" href="project-base-location.html">
+<link rel="import" href="project-base-query-params.html">
+
+<!-- Element Definition -->
+<dom-module id="project-location">
+  <template>
+    <project-base-location
+        path="{{__path}}"
+        query="{{__query}}"
+        hash="{{__hash}}"
+        url-space-regex="{{urlSpaceRegex}}"></project-base-location>
+    <project-base-query-params
+        params-string="{{__query}}"
+        params-object="{{queryParams}}"></project-base-query-params>
+  </template>
+
+  <script>
+    (function() {
+      class ProjectLocation extends Mixins.RouteConverter(Polymer.Element) {
+        static get is() { return 'project-location'; }
+
+        constructor() {
+          super();
+        }
+
+        static get properties() {
+          return {
+            route: {
+              type: Object,
+              notify: true
+            },
+
+            useHashAsPath: {
+              type: Boolean,
+              value: false
+            },
+
+            urlSpaceRegex: {
+              type: String,
+              notify: true
+            },
+
+            __queryParams: {
+              type: Object
+            },
+
+            __path: {
+              type: String
+            },
+
+            __query: {
+              type: String
+            },
+
+            __hash: {
+              type: String
+            },
+
+            path: {
+              type: String,
+              observer: '__onPathChanged'
+            }
+          };
+        }
+
+        static get observers() {
+          return [
+            '__computeRoutePath(useHashAsPath, __hash, __path)'
+          ]
+        }
+
+        //Observer functions
+        //---------------------------------------------------------------
+
+        __computeRoutePath() {
+          this.path = this.useHashAsPath ? this.__hash : this.__path;
+        }
+
+        __onPathChanged() {
+          if (!this._readied) {
+            return;
+          }
+          if (this.useHashAsPath) {
+            this.__hash = this.path;
+          } else {
+            this.__path = this.path;
+          }
+        }
+      }
+
+      window.customElements.define(ProjectLocation.is, ProjectLocation);
+    })();
+  </script>
+</dom-module>

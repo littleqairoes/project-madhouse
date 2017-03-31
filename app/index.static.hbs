@@ -11,5 +11,12 @@ _options:
   </head>
 
   <body>
-    <project-core></project-core>
+    {{#each pages}}
+      <link rel="lazy-import" href="/page_components/{{element}}/{{element}}.html" group="{{element}}" />
+    {{/each}}
+    <project-core id="project-core">
+      {{#each pages}}
+        <{{element}} route="{{route}}"></{{element}}>
+      {{/each}}
+    </project-core>
   </body>
