@@ -23,6 +23,7 @@ SassBrunchStatic = (function() {
   };
 
   SassBrunchStatic.prototype.compile = function(data, filename, options, callback) {
+    console.log('compiling')
     var opts;
     return sass.render({data: data.toString()}, function(err, css) {
       if (err) {

@@ -1,0 +1,63 @@
+<!-- Bower Components Dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<!-- Project Components Dependencies -->
+<link rel="import" href="../app-storage/app-network-status-mixin.html">
+<link rel="import" href="firebase-app-script.html">
+
+<script>
+  (function(){
+    window.Mixins = window.Mixins || {};
+    window.Mixins.FirebaseCommon = window.Mixins.FirebaseCommon || function(superClass) {
+      return class extends window.Mixins.AppNetworkStatus(superClass) {
+        constructor() {
+          super();
+        }
+
+        static get properties() {
+          return {
+            app: {
+              type: Object,
+              notify: true,
+              observer: '__appChanged'
+            },
+            appName: {
+              type: String,
+              notify: true,
+              value: '',
+              observer: '__appNameChanged'
+            }
+          }
+        }
+
+        __appNameChanged(appName) {
+          if (this.app && this.app.name === appName) {
+            return;
+          }
+          try {
+            if (appName == null) {
+              this.app = firebase.app();
+            } else {
+              this.app = firebase.app(appName);
+            }
+          } catch (e) {
+            // appropriate app hasn't been initialized yet
+          }
+        }
+
+        __appChanged(app) {
+          if (app && app.name === this.appName) {
+            return;
+          }
+          this.appName = app ? app.name : '';
+        }
+
+        __onError(err) {
+          this.dispatchEvent(new CustomEvent('error', {
+            detail: err
+          }))
+        }
+      }
+    }
+  })();
+</script>

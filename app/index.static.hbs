@@ -8,6 +8,17 @@ _options:
   <head>
     {{>head-meta-partial}}
     {{>head-script-partial}}
+
+    {{#if firebaseConfig}}
+    <script>
+      window.firebaseConfig = {
+        authDomain: '{{firebaseConfig.authDomain}}',
+        databaseUrl: '{{firebaseConfig.databaseUrl}}',
+        apiKey: '{{firebaseConfig.apiKey}}',
+        storageBucket: '{{firebaseConfig.storageBucket}}'
+      }
+    </script>
+    {{/if}}
   </head>
 
   <body>

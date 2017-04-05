@@ -7,6 +7,10 @@
 <link rel="import" href="../../project_components/project-router/project-router-mixin.html">
 <link rel="import" href="../../project_components/project-router/project-location.html">
 <link rel="import" href="../../project_components/project-router/project-pages.html">
+<link rel="import" href="../../project_components/polymerfire/firebase-app-script.html">
+<link rel="import" href="../../project_components/polymerfire/firebase-auth-script.html">
+<link rel="import" href="../../project_components/polymerfire/firebase-database-script.html">
+<link rel="import" href="../../project_components/polymerfire/firebase-app.html">
 
 <!-- Style -->
 <link rel="import" href="project-core-styles.html">
@@ -14,6 +18,13 @@
 <!-- Element Definition -->
 <dom-module id="project-core">
   <template>
+
+    <firebase-app
+        auth-domain="[[firebaseConfig.authDomain]]"
+        database-url="[[firebaseConfig.databaseUrl]]"
+        api-key="[[firebaseConfig.apiKey]]"
+        storage-bucket="[[firebaseConfig.storageBucket]]"></firebase-app>
+
     <project-location route="{{_route}}" path="{{_path}}" query-params="{{queryParams}}"></project-location>
 
     <project-pages
@@ -36,6 +47,10 @@
 
         connectedCallback() {
           super.connectedCallback();
+        }
+
+        static get firebaseConfig() {
+          return window.firebaseConfig;
         }
       }
 

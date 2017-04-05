@@ -11,4 +11,5 @@ exports.app = {
 exports.manifest = require('./manifest');
 exports.meta = require('./meta');
 exports.pages = require('./pages');
+exports.firebaseConfig = require('./firebase');
 

@@ -1,0 +1,113 @@
+<link rel="import" href="../app-storage/app-storage-mixin.html">
+<link rel="import" href="firebase-common-mixin.html">
+<link rel="import" href="firebase-database-script.html">
+
+<script>
+  (function() {
+    window.Mixins = window.Mixins || {};
+    window.Mixins.FirebaseDatabase = window.Mixins.FirebaseDatabase || function(superClass) {
+      return class extends window.Mixins.AppStorage(window.Mixins.FirebaseCommon(superClass)) {
+        constructor() {
+          super();
+        }
+
+        static get properties() {
+          return {
+            db: {
+              type: Object,
+              computed: '__computeDb(app)'
+            },
+            ref: {
+              type: Object,
+              computed: '__computeRef(db, path, disabled)',
+              observer: '__refChanged'
+            },
+            /**
+             * Path to a Firebase root or endpoint. N.B. `path` is case sensitive.
+             */
+            path: {
+              type: String,
+              observer: '__pathChanged',
+              value: null
+            },
+            /**
+             * When true, Firebase listeners won't be activated. This can be useful
+             * in situations where elements are loaded into the DOM before they're
+             * ready to be activated (e.g. navigation, initialization scenarios).
+             */
+            disabled: {
+              type: Boolean,
+              value: false
+            }
+          }
+        }
+
+        static get observers() {
+          return [
+            '__onlineChanged(online)'
+          ]
+        }
+
+        _setFirebaseValue(path, value) {
+          this._log('Setting Firebase value at', path, 'to', value)
+          var key = value && value.$key;
+          var leaf = value && value.hasOwnProperty('$val');
+          if (key) {
+            value.$key = null;
+          }
+          var result = this.db.ref(path).set(leaf ? value.$val : value);
+          if (key) {
+            value.$key = key;
+          }
+          return result;
+        }
+
+        __computeDb(app) {
+          return app ? app.database() : null;
+        }
+
+        __computeRef(db, path) {
+          if (db == null ||
+              path == null ||
+              !this.__pathReady(path) ||
+              this.disabled) {
+            return null;
+          }
+          return db.ref(path);
+        }
+
+        /**
+         * Override this method if needed.
+         * e.g. to detach or attach listeners.
+         */
+        __refChanged(ref, oldRef){
+          return;
+        }
+
+        __pathChanged(path, oldPath) {
+          if (!this.disabled && !this.valueIsEmpty(this.data)) {
+            this.syncToMemory(function() {
+              this.data = this.zeroValue;
+              this.__needSetData = true;
+            });
+          }
+        }
+
+        __pathReady(path) {
+          return path && path.split('/').slice(1).indexOf('') < 0;
+        }
+
+        __onlineChanged(online) {
+          if (!this.ref) {
+            return;
+          }
+          if (online) {
+            this.db.goOnline();
+          } else {
+            this.db.goOffline();
+          }
+        }
+      }
+    }
+  })();
+</script>

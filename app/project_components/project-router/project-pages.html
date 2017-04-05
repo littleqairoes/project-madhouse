@@ -50,7 +50,7 @@
         }
 
         _selectedPageChanged(selected, old) {
-          setTimeout(this.notifyResize);
+          Polymer.Async.microTask.run(this.notifyResize.bind(this));
           // Polymer.async(this.notifyResize);
         }
       }

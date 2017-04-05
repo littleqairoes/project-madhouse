@@ -1,0 +1,117 @@
+<!-- Bower Components Dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<!-- Project Components Dependencies -->
+<link rel="import" href="firebase-app-script.html">
+
+<script>
+(function(){
+  class FirebaseApp extends Polymer.Element {
+    static get is() { return 'firebase-app'; }
+
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      super.connectedCallback();
+    }
+
+    static get properties() {
+      return {
+        /**
+         * The name of your app. Optional.
+         *
+         * You can use this with the `appName` property of other Polymerfire elements
+         * in order to use multiple firebase configurations on a page at once.
+         * In that case the name is used as a key to lookup the configuration.
+         */
+        name: {
+          type: String,
+          value: ''
+        },
+        /**
+         * Your API key.
+         *
+         * Get this from the Auth > Web Setup panel of the new
+         * Firebase Console at https://console.firebase.google.com
+         *
+         * It looks like this: 'AIzaSyDTP-eiQezleFsV2WddFBAhF_WEzx_8v_g'
+         */
+        apiKey: {
+          type: String
+        },
+        /**
+         * The domain name to authenticate with.
+         *
+         * The same as your Firebase Hosting subdomain or custom domain.
+         * Available on the Firebase Console.
+         *
+         * For example: 'polymerfire-test.firebaseapp.com'
+         */
+        authDomain: {
+          type: String
+        },
+        /**
+         * The URL of your Firebase Realtime Database. You can find this
+         * URL in the Database panel of the Firebase Console.
+         * Available on the Firebase Console.
+         *
+         * For example: 'https://polymerfire-test.firebaseio.com/'
+         */
+        databaseUrl: {
+          type: String
+        },
+        /**
+         * The Firebase Storage bucket for your project. You can find this
+         * in the Firebase Console under "Web Setup".
+         *
+         * For example: `polymerfire-test.appspot.com`
+         */
+        storageBucket: {
+          type: String,
+          value: null
+        },
+        /**
+         * The Firebase Cloud Messaging Sender ID for your project. You can find
+         * this in the Firebase Console under "Web Setup".
+         */
+        messagingSenderId: {
+          type: String,
+          value: null
+        },
+        /**
+         * The Firebase app object constructed from the other fields of
+         * this element.
+         */
+        app: {
+          type: Object,
+          notify: true,
+          computed: '__computeApp(name, apiKey, authDomain, databaseUrl, storageBucket, messagingSenderId)'
+        }
+      };
+    }
+
+    __computeApp(name, apiKey, authDomain, databaseUrl, storageBucket, messagingSenderId) {
+      if (apiKey && authDomain && databaseUrl) {
+        var init = [{
+          apiKey: apiKey,
+          authDomain: authDomain,
+          databaseURL: databaseUrl,
+          storageBucket: storageBucket,
+          messagingSenderId: messagingSenderId
+        }];
+        if (name) {
+          init.push(name);
+        }
+        firebase.initializeApp.apply(firebase, init);
+      } else {
+        return null;
+      }
+      return firebase.app(name);
+    }
+  }
+
+  window.customElements.define(FirebaseApp.is, FirebaseApp);
+})();
+</script>

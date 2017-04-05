@@ -1,0 +1,186 @@
+<!-- Bower Components Dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/async.html">
+
+<!-- Project Components Dependencies -->
+<link rel="import" href="firebase-database-mixin.html">
+
+<script>
+  (function(){
+    class FirebaseDocument extends Mixins.FirebaseDatabase(Polymer.Element) {
+      static get is() { return 'firebase-document'; }
+
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.__needSetData = true;
+        this.__refChanged(this.ref, this.ref);
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        if (this.ref) {
+          this.ref.off('value', this.__onFirebaseValue, this);
+        }
+      }
+
+      /**
+       * @override
+       */
+      get isNew() {
+        return this.disabled || !this.__pathReady(this.path);
+      }
+
+      /**
+       * @override
+       */
+      get zeroValue() {
+        return {};
+      }
+
+      /**
+       * Update the path and write this.data to that new location.
+       *
+       * Important note: `this.path` is updated asynchronously.
+       *
+       * @param {string} parentPath The new firebase location to write to.
+       * @param {string=} key The key within the parentPath to write `data` to. If
+       *     not given, a random key will be generated and used.
+       * @return {Promise} A promise that resolves once this.data has been
+       *     written to the new path.
+       * @override
+       */
+      save(parentPath, key) {
+        return new Promise((resolve, reject) => {
+          var path;
+          if (!this.app) {
+            reject(new Error('No app configured!'));
+          }
+          if (key) {
+            path = parentPath + '/' + key;
+            resolve(this._setFirebaseValue(path, this.data));
+          } else {
+            path = firebase.database(this.app).ref(parentPath)
+                .push(this.data, (error) => {
+                  if (error) {
+                    reject(error);
+                    return;
+                  }
+                  resolve();
+                }).path.toString();
+          }
+          this.path = path;
+        });
+      }
+
+      /**
+       * @override
+       */
+      reset() {
+        this.path = null;
+        return Promise.resolve();
+      }
+
+      /**
+       * @override
+       */
+      destroy() {
+        return this._setFirebaseValue(this.path, null).then(() => {
+          return this.reset();
+        });
+      }
+
+      /**
+       * @override
+       */
+      memoryPathToStoragePath(path) {
+        var storagePath = this.path;
+        if (path !== 'data') {
+          storagePath += path.replace(/^data\.?/, '/').split('.').join('/');
+        }
+        return storagePath;
+      }
+
+      /**
+       * @override
+       */
+      storagePathToMemoryPath(storagePath) {
+        var path = 'data';
+        storagePath =
+            storagePath.replace(this.path, '').split('/').join('.');
+        if (storagePath) {
+          path += '.' + storagePath;
+        }
+        return path;
+      }
+
+      /**
+       * @override
+       */
+      getStoredValue(path) {
+        return new Promise((resolve, reject) => {
+          this.db.ref(path).once('value', (snapshot) => {
+            var value = snapshot.val();
+            if (value == null) {
+              resolve(this.zeroValue);
+            }
+            resolve(value);
+          }, this.__onError, this);
+        });
+      }
+
+      /**
+       * @override
+       */
+      setStoredValue(path, value) {
+        return this._setFirebaseValue(path, value);
+      }
+
+      __refChanged(ref, oldRef) {
+        if (oldRef) {
+          oldRef.off('value', this.__onFirebaseValue, this);
+        }
+        if (ref) {
+          ref.on('value', this.__onFirebaseValue, this.__onError, this);
+        }
+      }
+
+      __onFirebaseValue(snapshot) {
+        var value = snapshot.val();
+        if (value == null) {
+          value = this.zeroValue;
+          this.__needSetData = true;
+        }
+        if (!this.isNew) {
+          Polymer.Async.microTask.run(() => {
+            this.syncToMemory(() => {
+              this._log('Updating data from Firebase value:', value);
+
+              // set the value if:
+              // it is the first time we run this (or the path has changed and we are back with zeroValue)
+              // or if  this.data does not exist
+              // or value is primitive
+              // or if firebase value obj contain less keys than this.data (https://github.com/Polymer/polymer/issues/2565)
+              if (this.__needSetData || !this.data || typeof value !== 'object' || ( Object.keys(value).length <  Object.keys(this.data).length)) {
+                this.__needSetData = false;
+                return this.set('data', value);
+              }
+              // now, we loop over keys
+              for (var prop in value) {
+                if(value[prop] !== this.data[prop]) {
+                  this.set(['data', prop], value[prop]);
+                }
+              }
+            });
+          });
+        }
+      }
+
+    }
+
+    window.customElements.define(FirebaseDocument.is, FirebaseDocument);
+  })();
+</script>

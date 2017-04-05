@@ -1,9 +1,8 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-
 <script>
   (function() {
 
     // expose BC settings.
+    window.Polymer = window.Polymer || {};
     var settings = window.Polymer.Settings || {};
     settings.useShadow = !(window.ShadyDOM);
     settings.useNativeCSSProperties =

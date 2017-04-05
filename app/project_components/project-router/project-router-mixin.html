@@ -1,4 +1,3 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/utils/flattened-nodes-observer.html">
 
 <script>
@@ -177,7 +176,6 @@
          * Sets the path property
          */
         _setPath(path) {
-          console.log(path)
           this.path = path || '/';
         }
 
@@ -396,7 +394,7 @@
               document.title = newView.title;
             }
             // this.fire('view-loaded');
-            console.log(this._newView)
+            // console.log(this._newView)
 
             this.dispatchEvent(new CustomEvent('view-loaded'), {
               detail: {
